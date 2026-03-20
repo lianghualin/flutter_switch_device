@@ -1,0 +1,300 @@
+<h2>Adaptive Layout — Detailed Breakdown</h2>
+<p class="subtitle">The widget automatically picks the best layout based on port count. Here's every tier at actual proportions.</p>
+
+<style>
+  .tier { margin-bottom: 32px; }
+  .tier-header { display:flex; align-items:center; gap:12px; margin-bottom:12px; }
+  .tier-badge { background:#49B87D; color:white; font-size:11px; font-weight:700; padding:3px 10px; border-radius:12px; white-space:nowrap; }
+  .tier-rule { font-size:12px; color:#888; }
+  .tier-scene { background:#f5f5f5; border-radius:10px; padding:20px; display:flex; flex-direction:column; align-items:center; gap:6px; }
+  .tier-label { font-size:10px; color:#999; margin-top:4px; }
+
+  /* Port builder helpers */
+  .sw { display:flex; align-items:center; padding:0 10px; box-shadow:0 3px 10px rgba(0,0,0,0.25); }
+  .sw-body { background:linear-gradient(180deg,#5a5a6e,#44445a); border-radius:7px; }
+  .leds { display:flex; flex-direction:column; gap:3px; margin-right:10px; align-items:center; }
+  .led-g { width:5px; height:5px; border-radius:50%; background:#49B87D; box-shadow:0 0 4px #49B87D; }
+  .led-y { width:5px; height:5px; border-radius:50%; background:#F0CC18; box-shadow:0 0 4px #F0CC18; }
+  .led-d { width:5px; height:5px; border-radius:50%; background:#414142; }
+  .port-area { flex:1; display:flex; flex-direction:column; gap:2px; justify-content:center; }
+  .port-row { display:flex; gap:2px; justify-content:center; }
+  .p { border-radius:2px; border:1px solid rgba(0,0,0,0.2); display:flex; align-items:center; justify-content:center; font-weight:bold; color:white; }
+  .p.up { background:#2CC339; }
+  .p.dn { background:#9E9E9E; }
+  .p.off { background:#333; color:rgba(255,255,255,0.4); }
+  .disp { background:rgba(255,255,255,0.08); border-radius:3px; border:1px solid rgba(255,255,255,0.1); display:flex; align-items:center; justify-content:center; color:rgba(255,255,255,0.3); }
+  .gap4 { width:4px; }
+  .stacked-active { border:2px solid #49B87D; }
+  .stacked-dim { opacity:0.3; }
+  .divider { height:1px; background:rgba(255,255,255,0.1); margin:1px 0; }
+</style>
+
+<!-- TIER 1: 6-16 ports -->
+<div class="tier">
+  <div class="tier-header">
+    <div class="tier-badge">Tier 1: 6–16 ports</div>
+    <div class="tier-rule">Two-row B2 + display panel. Spacious ports with pin detail.</div>
+  </div>
+
+  <div class="tier-scene">
+    <div class="tier-label">6 ports</div>
+    <div class="sw sw-body" style="width:220px;height:58px;">
+      <div class="leds"><div class="led-g"></div><div class="led-y"></div><div class="led-d"></div></div>
+      <div class="port-area">
+        <div class="port-row">
+          <div class="p up" style="width:20px;height:22px;font-size:7px;">1</div>
+          <div class="p dn" style="width:20px;height:22px;font-size:7px;">3</div>
+          <div class="p up" style="width:20px;height:22px;font-size:7px;">5</div>
+        </div>
+        <div class="port-row">
+          <div class="p up" style="width:20px;height:22px;font-size:7px;">2</div>
+          <div class="p up" style="width:20px;height:22px;font-size:7px;">4</div>
+          <div class="p off" style="width:20px;height:22px;font-size:7px;">6</div>
+        </div>
+      </div>
+      <div class="disp" style="width:44px;height:36px;margin-left:8px;font-size:8px;">6P</div>
+    </div>
+
+    <div class="tier-label" style="margin-top:12px;">16 ports</div>
+    <div class="sw sw-body" style="width:340px;height:58px;">
+      <div class="leds"><div class="led-g"></div><div class="led-y"></div><div class="led-d"></div></div>
+      <div class="port-area">
+        <div class="port-row">
+          <div class="p up" style="width:18px;height:20px;font-size:6px;">1</div>
+          <div class="p dn" style="width:18px;height:20px;font-size:6px;">3</div>
+          <div class="p up" style="width:18px;height:20px;font-size:6px;">5</div>
+          <div class="p up" style="width:18px;height:20px;font-size:6px;">7</div>
+          <div class="gap4"></div>
+          <div class="p off" style="width:18px;height:20px;font-size:6px;">9</div>
+          <div class="p up" style="width:18px;height:20px;font-size:6px;">11</div>
+          <div class="p up" style="width:18px;height:20px;font-size:6px;">13</div>
+          <div class="p dn" style="width:18px;height:20px;font-size:6px;">15</div>
+        </div>
+        <div class="port-row">
+          <div class="p up" style="width:18px;height:20px;font-size:6px;">2</div>
+          <div class="p up" style="width:18px;height:20px;font-size:6px;">4</div>
+          <div class="p dn" style="width:18px;height:20px;font-size:6px;">6</div>
+          <div class="p up" style="width:18px;height:20px;font-size:6px;">8</div>
+          <div class="gap4"></div>
+          <div class="p up" style="width:18px;height:20px;font-size:6px;">10</div>
+          <div class="p off" style="width:18px;height:20px;font-size:6px;">12</div>
+          <div class="p up" style="width:18px;height:20px;font-size:6px;">14</div>
+          <div class="p up" style="width:18px;height:20px;font-size:6px;">16</div>
+        </div>
+      </div>
+      <div class="disp" style="width:44px;height:36px;margin-left:8px;font-size:8px;">16P</div>
+    </div>
+  </div>
+</div>
+
+<!-- TIER 2: 18-28 ports -->
+<div class="tier">
+  <div class="tier-header">
+    <div class="tier-badge">Tier 2: 18–28 ports</div>
+    <div class="tier-rule">Two-row B2, NO display panel. Ports use full width. Slightly smaller port size.</div>
+  </div>
+
+  <div class="tier-scene">
+    <div class="tier-label">24 ports</div>
+    <div class="sw sw-body" style="width:400px;height:56px;">
+      <div class="leds"><div class="led-g"></div><div class="led-y"></div></div>
+      <div class="port-area">
+        <div class="port-row">
+          <div class="p up" style="width:16px;height:19px;font-size:6px;">1</div>
+          <div class="p dn" style="width:16px;height:19px;font-size:6px;">3</div>
+          <div class="p up" style="width:16px;height:19px;font-size:6px;">5</div>
+          <div class="p up" style="width:16px;height:19px;font-size:6px;">7</div>
+          <div class="gap4"></div>
+          <div class="p off" style="width:16px;height:19px;font-size:6px;">9</div>
+          <div class="p up" style="width:16px;height:19px;font-size:6px;">11</div>
+          <div class="p up" style="width:16px;height:19px;font-size:6px;">13</div>
+          <div class="p dn" style="width:16px;height:19px;font-size:6px;">15</div>
+          <div class="gap4"></div>
+          <div class="p up" style="width:16px;height:19px;font-size:6px;">17</div>
+          <div class="p up" style="width:16px;height:19px;font-size:6px;">19</div>
+          <div class="p off" style="width:16px;height:19px;font-size:6px;">21</div>
+          <div class="p up" style="width:16px;height:19px;font-size:6px;">23</div>
+        </div>
+        <div class="port-row">
+          <div class="p up" style="width:16px;height:19px;font-size:6px;">2</div>
+          <div class="p up" style="width:16px;height:19px;font-size:6px;">4</div>
+          <div class="p dn" style="width:16px;height:19px;font-size:6px;">6</div>
+          <div class="p up" style="width:16px;height:19px;font-size:6px;">8</div>
+          <div class="gap4"></div>
+          <div class="p up" style="width:16px;height:19px;font-size:6px;">10</div>
+          <div class="p off" style="width:16px;height:19px;font-size:6px;">12</div>
+          <div class="p up" style="width:16px;height:19px;font-size:6px;">14</div>
+          <div class="p dn" style="width:16px;height:19px;font-size:6px;">16</div>
+          <div class="gap4"></div>
+          <div class="p up" style="width:16px;height:19px;font-size:6px;">18</div>
+          <div class="p up" style="width:16px;height:19px;font-size:6px;">20</div>
+          <div class="p up" style="width:16px;height:19px;font-size:6px;">22</div>
+          <div class="p up" style="width:16px;height:19px;font-size:6px;">24</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="tier-label" style="margin-top:12px;">28 ports</div>
+    <div class="sw sw-body" style="width:420px;height:56px;">
+      <div class="leds"><div class="led-g"></div><div class="led-y"></div></div>
+      <div class="port-area">
+        <div class="port-row">
+          <div class="p up" style="width:15px;height:19px;font-size:5px;">1</div>
+          <div class="p dn" style="width:15px;height:19px;font-size:5px;">3</div>
+          <div class="p up" style="width:15px;height:19px;font-size:5px;">5</div>
+          <div class="p up" style="width:15px;height:19px;font-size:5px;">7</div>
+          <div class="gap4"></div>
+          <div class="p off" style="width:15px;height:19px;font-size:5px;">9</div>
+          <div class="p up" style="width:15px;height:19px;font-size:5px;">11</div>
+          <div class="p up" style="width:15px;height:19px;font-size:5px;">13</div>
+          <div class="p dn" style="width:15px;height:19px;font-size:5px;">15</div>
+          <div class="gap4"></div>
+          <div class="p up" style="width:15px;height:19px;font-size:5px;">17</div>
+          <div class="p up" style="width:15px;height:19px;font-size:5px;">19</div>
+          <div class="p off" style="width:15px;height:19px;font-size:5px;">21</div>
+          <div class="p up" style="width:15px;height:19px;font-size:5px;">23</div>
+          <div class="gap4"></div>
+          <div class="p up" style="width:15px;height:19px;font-size:5px;">25</div>
+          <div class="p dn" style="width:15px;height:19px;font-size:5px;">27</div>
+        </div>
+        <div class="port-row">
+          <div class="p up" style="width:15px;height:19px;font-size:5px;">2</div>
+          <div class="p up" style="width:15px;height:19px;font-size:5px;">4</div>
+          <div class="p dn" style="width:15px;height:19px;font-size:5px;">6</div>
+          <div class="p up" style="width:15px;height:19px;font-size:5px;">8</div>
+          <div class="gap4"></div>
+          <div class="p up" style="width:15px;height:19px;font-size:5px;">10</div>
+          <div class="p off" style="width:15px;height:19px;font-size:5px;">12</div>
+          <div class="p up" style="width:15px;height:19px;font-size:5px;">14</div>
+          <div class="p up" style="width:15px;height:19px;font-size:5px;">16</div>
+          <div class="gap4"></div>
+          <div class="p up" style="width:15px;height:19px;font-size:5px;">18</div>
+          <div class="p up" style="width:15px;height:19px;font-size:5px;">20</div>
+          <div class="p up" style="width:15px;height:19px;font-size:5px;">22</div>
+          <div class="p dn" style="width:15px;height:19px;font-size:5px;">24</div>
+          <div class="gap4"></div>
+          <div class="p up" style="width:15px;height:19px;font-size:5px;">26</div>
+          <div class="p up" style="width:15px;height:19px;font-size:5px;">28</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- TIER 3: 30-48 ports (stacked) -->
+<div class="tier">
+  <div class="tier-header">
+    <div class="tier-badge">Tier 3: 30–48 ports</div>
+    <div class="tier-rule">Stacked two-body. Each body has single row of 24 ports. Tap to toggle active unit. Invalid ports greyed out.</div>
+  </div>
+
+  <div class="tier-scene">
+    <div class="tier-label">36 ports (valid) / 48 total — Part 1 selected</div>
+    <!-- Upper ACTIVE -->
+    <div class="sw sw-body stacked-active" style="width:420px;height:42px;">
+      <div style="display:flex;flex-direction:column;gap:2px;margin-right:8px;"><div class="led-g"></div><div class="led-y"></div></div>
+      <div class="port-area">
+        <div class="port-row">
+          <div class="p up" style="width:13px;height:16px;font-size:5px;">1</div>
+          <div class="p up" style="width:13px;height:16px;font-size:5px;">2</div>
+          <div class="p dn" style="width:13px;height:16px;font-size:5px;">3</div>
+          <div class="p up" style="width:13px;height:16px;font-size:5px;">4</div>
+          <div class="p up" style="width:13px;height:16px;font-size:5px;">5</div>
+          <div class="p off" style="width:13px;height:16px;font-size:5px;">6</div>
+          <div class="gap4"></div>
+          <div class="p up" style="width:13px;height:16px;font-size:5px;">7</div>
+          <div class="p up" style="width:13px;height:16px;font-size:5px;">8</div>
+          <div class="p dn" style="width:13px;height:16px;font-size:5px;">9</div>
+          <div class="p up" style="width:13px;height:16px;font-size:5px;">10</div>
+          <div class="p up" style="width:13px;height:16px;font-size:5px;">11</div>
+          <div class="p up" style="width:13px;height:16px;font-size:5px;">12</div>
+          <div class="gap4"></div>
+          <div class="p up" style="width:13px;height:16px;font-size:5px;">13</div>
+          <div class="p dn" style="width:13px;height:16px;font-size:5px;">14</div>
+          <div class="p up" style="width:13px;height:16px;font-size:5px;">15</div>
+          <div class="p up" style="width:13px;height:16px;font-size:5px;">16</div>
+          <div class="p off" style="width:13px;height:16px;font-size:5px;">17</div>
+          <div class="p up" style="width:13px;height:16px;font-size:5px;">18</div>
+          <div class="gap4"></div>
+          <div class="p up" style="width:13px;height:16px;font-size:5px;">19</div>
+          <div class="p up" style="width:13px;height:16px;font-size:5px;">20</div>
+          <div class="p up" style="width:13px;height:16px;font-size:5px;">21</div>
+          <div class="p dn" style="width:13px;height:16px;font-size:5px;">22</div>
+          <div class="p up" style="width:13px;height:16px;font-size:5px;">23</div>
+          <div class="p up" style="width:13px;height:16px;font-size:5px;">24</div>
+        </div>
+      </div>
+    </div>
+    <!-- Lower DIMMED, ports 25-36 valid, 37-48 invalid -->
+    <div class="sw sw-body stacked-dim" style="width:420px;height:42px;">
+      <div style="display:flex;flex-direction:column;gap:2px;margin-right:8px;"><div class="led-g"></div><div class="led-y"></div></div>
+      <div class="port-area">
+        <div class="port-row">
+          <div class="p up" style="width:13px;height:16px;font-size:5px;">25</div>
+          <div class="p dn" style="width:13px;height:16px;font-size:5px;">26</div>
+          <div class="p up" style="width:13px;height:16px;font-size:5px;">27</div>
+          <div class="p up" style="width:13px;height:16px;font-size:5px;">28</div>
+          <div class="p up" style="width:13px;height:16px;font-size:5px;">29</div>
+          <div class="p dn" style="width:13px;height:16px;font-size:5px;">30</div>
+          <div class="gap4"></div>
+          <div class="p up" style="width:13px;height:16px;font-size:5px;">31</div>
+          <div class="p up" style="width:13px;height:16px;font-size:5px;">32</div>
+          <div class="p off" style="width:13px;height:16px;font-size:5px;">33</div>
+          <div class="p up" style="width:13px;height:16px;font-size:5px;">34</div>
+          <div class="p up" style="width:13px;height:16px;font-size:5px;">35</div>
+          <div class="p up" style="width:13px;height:16px;font-size:5px;">36</div>
+          <div class="gap4"></div>
+          <div class="p off" style="width:13px;height:16px;font-size:5px;opacity:0.4;">37</div>
+          <div class="p off" style="width:13px;height:16px;font-size:5px;opacity:0.4;">38</div>
+          <div class="p off" style="width:13px;height:16px;font-size:5px;opacity:0.4;">39</div>
+          <div class="p off" style="width:13px;height:16px;font-size:5px;opacity:0.4;">40</div>
+          <div class="p off" style="width:13px;height:16px;font-size:5px;opacity:0.4;">41</div>
+          <div class="p off" style="width:13px;height:16px;font-size:5px;opacity:0.4;">42</div>
+          <div class="gap4"></div>
+          <div class="p off" style="width:13px;height:16px;font-size:5px;opacity:0.4;">43</div>
+          <div class="p off" style="width:13px;height:16px;font-size:5px;opacity:0.4;">44</div>
+          <div class="p off" style="width:13px;height:16px;font-size:5px;opacity:0.4;">45</div>
+          <div class="p off" style="width:13px;height:16px;font-size:5px;opacity:0.4;">46</div>
+          <div class="p off" style="width:13px;height:16px;font-size:5px;opacity:0.4;">47</div>
+          <div class="p off" style="width:13px;height:16px;font-size:5px;opacity:0.4;">48</div>
+        </div>
+      </div>
+    </div>
+    <div class="tier-label">Ports 37-48 are invalid (greyed & semi-transparent)</div>
+  </div>
+</div>
+
+<!-- SUMMARY TABLE -->
+<div style="margin-top:16px;">
+  <h3>Adaptive Rules Summary</h3>
+  <table style="width:100%;border-collapse:collapse;font-size:13px;margin-top:8px;">
+    <tr style="border-bottom:1px solid #333;">
+      <th style="text-align:left;padding:8px;color:#49B87D;">Port Count</th>
+      <th style="text-align:left;padding:8px;color:#49B87D;">Layout</th>
+      <th style="text-align:left;padding:8px;color:#49B87D;">Port Rows</th>
+      <th style="text-align:left;padding:8px;color:#49B87D;">Display Panel</th>
+      <th style="text-align:left;padding:8px;color:#49B87D;">Port Size</th>
+    </tr>
+    <tr style="border-bottom:1px solid #222;">
+      <td style="padding:8px;">6–16</td>
+      <td style="padding:8px;">Single body</td>
+      <td style="padding:8px;">2 (odd top, even bottom)</td>
+      <td style="padding:8px;">Yes</td>
+      <td style="padding:8px;">18–20px wide</td>
+    </tr>
+    <tr style="border-bottom:1px solid #222;">
+      <td style="padding:8px;">18–28</td>
+      <td style="padding:8px;">Single body</td>
+      <td style="padding:8px;">2 (odd top, even bottom)</td>
+      <td style="padding:8px;">No (ports full width)</td>
+      <td style="padding:8px;">15–16px wide</td>
+    </tr>
+    <tr>
+      <td style="padding:8px;">30–48</td>
+      <td style="padding:8px;">Stacked two-body</td>
+      <td style="padding:8px;">1 per body (sequential)</td>
+      <td style="padding:8px;">No</td>
+      <td style="padding:8px;">13px wide</td>
+    </tr>
+  </table>
+</div>

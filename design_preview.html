@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Switch Device Visual Design Options</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #1a1a2e; color: #eee; padding: 24px; }
+  h1 { text-align: center; margin-bottom: 8px; font-size: 22px; color: #a8a8bd; }
+  .subtitle { text-align: center; color: #666; margin-bottom: 32px; font-size: 14px; }
+  .options { display: flex; flex-direction: column; gap: 48px; max-width: 1100px; margin: 0 auto; }
+  .option { background: #16213e; border-radius: 16px; padding: 28px; border: 2px solid #333; }
+  .option h2 { font-size: 16px; color: #a8a8bd; margin-bottom: 4px; }
+  .option .desc { font-size: 13px; color: #888; margin-bottom: 20px; }
+  .switch-scene { background: #f5f5f5; border-radius: 12px; padding: 32px; display: flex; flex-direction: column; align-items: center; gap: 8px; }
+  .switch-label { font-size: 14px; color: #333; font-weight: 600; margin-top: 8px; }
+
+  /* ============= OPTION A: Faithful reproduction ============= */
+  .switch-a {
+    width: 600px; height: 72px;
+    background: #555557; border-radius: 10px;
+    display: flex; align-items: center; padding: 0 10px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+    position: relative;
+  }
+  .switch-a .left-panel { display: flex; flex-direction: column; gap: 4px; width: 240px; padding: 6px 4px; }
+  .switch-a .led-row { display: flex; gap: 6px; align-items: center; }
+  .switch-a .led { width: 8px; height: 8px; border-radius: 50%; }
+  .switch-a .led.green { background: #49B87D; }
+  .switch-a .led.yellow { background: #F0CC18; }
+  .switch-a .led.dark { background: #414142; }
+  .switch-a .bar { height: 4px; background: #414142; border-radius: 2px; width: 100%; }
+  .switch-a .screen { flex: 1; background: #EDEEF0; border-radius: 6px; margin: 8px 6px; align-self: stretch; border: 1px solid #ddd; }
+
+  /* Ports for option A */
+  .ports-row-a { display: flex; gap: 2px; justify-content: center; }
+  .port-a { display: flex; flex-direction: column; align-items: center; }
+  .port-a .plug { width: 10px; height: 6px; background: var(--port-color); border-radius: 2px 2px 0 0; }
+  .port-a .body { width: 18px; height: 22px; background: var(--port-color); border-radius: 3px; display: flex; flex-wrap: wrap; justify-content: center; align-content: center; gap: 2px; padding: 3px; }
+  .port-a .dot { width: 3px; height: 3px; border-radius: 50%; background: white; }
+  .port-a.down { flex-direction: column-reverse; }
+  .port-a.down .plug { border-radius: 0 0 2px 2px; }
+  .port-a .label { font-size: 8px; color: white; font-weight: bold; position: absolute; }
+
+  /* ============= OPTION B: Clean modern ============= */
+  .switch-b {
+    width: 600px; height: 64px;
+    background: linear-gradient(180deg, #5a5a6e 0%, #44445a 100%);
+    border-radius: 8px;
+    display: flex; align-items: center; padding: 0 16px;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.25);
+  }
+  .switch-b .indicator-strip { display: flex; flex-direction: column; gap: 6px; margin-right: 16px; }
+  .switch-b .indicator-strip .ind { width: 6px; height: 6px; border-radius: 50%; }
+  .switch-b .indicator-strip .ind.on { background: #49B87D; box-shadow: 0 0 4px #49B87D; }
+  .switch-b .indicator-strip .ind.warn { background: #F0CC18; box-shadow: 0 0 4px #F0CC18; }
+  .switch-b .port-area { flex: 1; display: flex; gap: 3px; align-items: center; justify-content: center; }
+  .switch-b .port-slot {
+    width: 16px; height: 38px;
+    border-radius: 3px;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    gap: 2px; position: relative;
+  }
+  .switch-b .port-slot.up { background: #2CC339; }
+  .switch-b .port-slot.down { background: #9E9E9E; }
+  .switch-b .port-slot.off { background: #333; }
+  .switch-b .port-slot .pdot { width: 3px; height: 3px; border-radius: 50%; background: rgba(255,255,255,0.7); }
+  .switch-b .port-slot .pnum { font-size: 7px; color: white; font-weight: bold; }
+  .switch-b .display { width: 80px; height: 40px; background: rgba(255,255,255,0.08); border-radius: 4px; margin-left: 12px; border: 1px solid rgba(255,255,255,0.1); display: flex; align-items: center; justify-content: center; font-size: 9px; color: rgba(255,255,255,0.3); }
+
+  /* ============= OPTION C: Schematic / blueprint ============= */
+  .switch-c-wrap { position: relative; }
+  .switch-c {
+    width: 600px; height: 56px;
+    background: transparent;
+    border: 2px solid #6E6E96;
+    border-radius: 6px;
+    display: flex; align-items: center; padding: 0 12px;
+    position: relative;
+  }
+  .switch-c .c-label { font-size: 11px; color: #6E6E96; font-weight: 600; margin-right: 12px; white-space: nowrap; }
+  .switch-c .c-port-area { flex: 1; display: flex; gap: 4px; justify-content: center; }
+  .switch-c .c-port {
+    width: 14px; height: 14px;
+    border-radius: 2px;
+    border: 1.5px solid;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 7px; font-weight: bold;
+  }
+  .switch-c .c-port.up { border-color: #2CC339; color: #2CC339; background: rgba(44,195,57,0.1); }
+  .switch-c .c-port.down { border-color: #9E9E9E; color: #9E9E9E; background: rgba(158,158,158,0.1); }
+  .switch-c .c-port.off { border-color: #555; color: #555; background: transparent; }
+
+  /* ============= OPTION D: Realistic 3D-ish ============= */
+  .switch-d {
+    width: 620px; height: 80px;
+    background: linear-gradient(180deg, #7a7a8e 0%, #555567 30%, #44445a 100%);
+    border-radius: 6px 6px 4px 4px;
+    display: flex; align-items: stretch; padding: 0;
+    box-shadow: 0 2px 0 #333, 0 6px 16px rgba(0,0,0,0.4);
+    position: relative; overflow: hidden;
+  }
+  .switch-d::before {
+    content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.15), transparent);
+  }
+  .switch-d .d-left { width: 100px; display: flex; flex-direction: column; justify-content: center; padding: 8px 12px; gap: 4px; border-right: 1px solid rgba(255,255,255,0.05); }
+  .switch-d .d-left .d-brand { font-size: 9px; color: rgba(255,255,255,0.4); font-weight: 600; letter-spacing: 1px; }
+  .switch-d .d-left .d-leds { display: flex; gap: 5px; }
+  .switch-d .d-left .d-led { width: 6px; height: 6px; border-radius: 50%; }
+  .switch-d .d-left .d-led.pwr { background: #49B87D; box-shadow: 0 0 6px #49B87D; }
+  .switch-d .d-left .d-led.sys { background: #F0CC18; box-shadow: 0 0 6px #F0CC18; }
+  .switch-d .d-left .d-led.act { background: #414142; }
+  .switch-d .d-ports { flex: 1; display: flex; flex-direction: column; justify-content: center; gap: 2px; padding: 8px 12px; }
+  .switch-d .d-port-row { display: flex; gap: 3px; justify-content: center; }
+  .switch-d .d-port {
+    width: 20px; height: 22px;
+    border-radius: 2px;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    position: relative;
+    border: 1px solid rgba(0,0,0,0.3);
+  }
+  .switch-d .d-port.up { background: linear-gradient(180deg, #33d644, #28a835); }
+  .switch-d .d-port.down { background: linear-gradient(180deg, #aaa, #888); }
+  .switch-d .d-port.off { background: linear-gradient(180deg, #444, #333); }
+  .switch-d .d-port .d-pins { display: flex; gap: 1.5px; }
+  .switch-d .d-port .d-pin { width: 2px; height: 6px; background: rgba(255,255,255,0.6); border-radius: 1px; }
+  .switch-d .d-port .d-pnum { font-size: 6px; color: rgba(255,255,255,0.8); font-weight: bold; margin-top: 1px; }
+  .switch-d .d-display { width: 70px; display: flex; align-items: center; justify-content: center; border-left: 1px solid rgba(255,255,255,0.05); }
+  .switch-d .d-display .d-screen { width: 54px; height: 40px; background: #1a1a22; border-radius: 3px; border: 1px solid #555; display: flex; align-items: center; justify-content: center; font-size: 8px; color: #49B87D; font-family: monospace; }
+
+  /* ============= Stacked preview ============= */
+  .stacked-wrap { display: flex; flex-direction: column; gap: 6px; align-items: center; }
+
+  .compare { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 16px; }
+  .compare-item { text-align: center; }
+  .compare-item .tag { font-size: 11px; color: #666; margin-bottom: 6px; }
+</style>
+</head>
+<body>
+
+<h1>flutter_switch_device — Visual Design Options</h1>
+<p class="subtitle">Which style do you prefer for the programmatic switch? (Or mix-and-match elements)</p>
+
+<div class="options">
+
+<!-- OPTION A -->
+<div class="option">
+  <h2>Option A — Faithful Reproduction</h2>
+  <p class="desc">Closely matches the original SVG structure: dark body, LED indicators, status bars, screen panel. Ports are separate connector-shaped icons above/below.</p>
+  <div class="switch-scene">
+    <!-- Odd ports (top row) -->
+    <div class="ports-row-a">
+      <div class="port-a" style="--port-color: #2CC339;"><div class="plug"></div><div class="body"><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div></div></div>
+      <div class="port-a" style="--port-color: #2CC339;"><div class="plug"></div><div class="body"><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div></div></div>
+      <div class="port-a" style="--port-color: #9E9E9E;"><div class="plug"></div><div class="body"><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div></div></div>
+      <div class="port-a" style="--port-color: #2CC339;"><div class="plug"></div><div class="body"><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div></div></div>
+      <div class="port-a" style="--port-color: #000;"><div class="plug"></div><div class="body"><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div></div></div>
+      <div class="port-a" style="--port-color: #2CC339;"><div class="plug"></div><div class="body"><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div></div></div>
+      <div class="port-a" style="--port-color: #2CC339;"><div class="plug"></div><div class="body"><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div></div></div>
+      <div class="port-a" style="--port-color: #9E9E9E;"><div class="plug"></div><div class="body"><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div></div></div>
+      <div class="port-a" style="--port-color: #2CC339;"><div class="plug"></div><div class="body"><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div></div></div>
+      <div class="port-a" style="--port-color: #2CC339;"><div class="plug"></div><div class="body"><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div></div></div>
+      <div class="port-a" style="--port-color: #9E9E9E;"><div class="plug"></div><div class="body"><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div></div></div>
+      <div class="port-a" style="--port-color: #2CC339;"><div class="plug"></div><div class="body"><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div></div></div>
+    </div>
+    <!-- Switch body -->
+    <div class="switch-a">
+      <div class="left-panel">
+        <div class="led-row">
+          <div class="led green"></div><div class="led yellow"></div><div class="led dark"></div><div class="led dark"></div><div class="led dark"></div><div class="led dark"></div><div class="led dark"></div><div class="led dark"></div>
+        </div>
+        <div class="bar"></div>
+        <div class="bar"></div>
+        <div class="led-row">
+          <div class="led dark"></div><div class="led dark"></div><div class="led dark"></div><div class="led dark"></div><div class="led dark"></div><div class="led dark"></div><div class="led dark"></div><div class="led dark"></div>
+        </div>
+      </div>
+      <div class="screen"></div>
+    </div>
+    <!-- Even ports (bottom row) -->
+    <div class="ports-row-a">
+      <div class="port-a down" style="--port-color: #2CC339;"><div class="plug"></div><div class="body"><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div></div></div>
+      <div class="port-a down" style="--port-color: #9E9E9E;"><div class="plug"></div><div class="body"><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div></div></div>
+      <div class="port-a down" style="--port-color: #2CC339;"><div class="plug"></div><div class="body"><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div></div></div>
+      <div class="port-a down" style="--port-color: #2CC339;"><div class="plug"></div><div class="body"><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div></div></div>
+      <div class="port-a down" style="--port-color: #000;"><div class="plug"></div><div class="body"><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div></div></div>
+      <div class="port-a down" style="--port-color: #2CC339;"><div class="plug"></div><div class="body"><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div></div></div>
+      <div class="port-a down" style="--port-color: #9E9E9E;"><div class="plug"></div><div class="body"><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div></div></div>
+      <div class="port-a down" style="--port-color: #2CC339;"><div class="plug"></div><div class="body"><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div></div></div>
+      <div class="port-a down" style="--port-color: #2CC339;"><div class="plug"></div><div class="body"><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div></div></div>
+      <div class="port-a down" style="--port-color: #2CC339;"><div class="plug"></div><div class="body"><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div></div></div>
+      <div class="port-a down" style="--port-color: #000;"><div class="plug"></div><div class="body"><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div></div></div>
+      <div class="port-a down" style="--port-color: #2CC339;"><div class="plug"></div><div class="body"><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div></div></div>
+    </div>
+    <div class="switch-label">24-Port Switch (Odd ports top, Even ports bottom)</div>
+  </div>
+</div>
+
+<!-- OPTION B -->
+<div class="option">
+  <h2>Option B — Clean Modern (Integrated Ports)</h2>
+  <p class="desc">Ports are embedded inside the switch body. Flat, minimal style with subtle gradients. Indicator LEDs on the left, small display on the right.</p>
+  <div class="switch-scene">
+    <div class="switch-b">
+      <div class="indicator-strip">
+        <div class="ind on"></div>
+        <div class="ind warn"></div>
+        <div class="ind"></div>
+      </div>
+      <div class="port-area">
+        <div class="port-slot up"><div class="pdot"></div><div class="pdot"></div><div class="pnum">1</div></div>
+        <div class="port-slot up"><div class="pdot"></div><div class="pdot"></div><div class="pnum">2</div></div>
+        <div class="port-slot down"><div class="pdot"></div><div class="pdot"></div><div class="pnum">3</div></div>
+        <div class="port-slot up"><div class="pdot"></div><div class="pdot"></div><div class="pnum">4</div></div>
+        <div class="port-slot off"><div class="pdot"></div><div class="pdot"></div><div class="pnum">5</div></div>
+        <div class="port-slot up"><div class="pdot"></div><div class="pdot"></div><div class="pnum">6</div></div>
+        <div class="port-slot up"><div class="pdot"></div><div class="pdot"></div><div class="pnum">7</div></div>
+        <div class="port-slot down"><div class="pdot"></div><div class="pdot"></div><div class="pnum">8</div></div>
+        <div style="width: 8px;"></div>
+        <div class="port-slot up"><div class="pdot"></div><div class="pdot"></div><div class="pnum">9</div></div>
+        <div class="port-slot up"><div class="pdot"></div><div class="pdot"></div><div class="pnum">10</div></div>
+        <div class="port-slot up"><div class="pdot"></div><div class="pdot"></div><div class="pnum">11</div></div>
+        <div class="port-slot down"><div class="pdot"></div><div class="pdot"></div><div class="pnum">12</div></div>
+        <div class="port-slot up"><div class="pdot"></div><div class="pdot"></div><div class="pnum">13</div></div>
+        <div class="port-slot off"><div class="pdot"></div><div class="pdot"></div><div class="pnum">14</div></div>
+        <div class="port-slot up"><div class="pdot"></div><div class="pdot"></div><div class="pnum">15</div></div>
+        <div class="port-slot up"><div class="pdot"></div><div class="pdot"></div><div class="pnum">16</div></div>
+        <div style="width: 8px;"></div>
+        <div class="port-slot up"><div class="pdot"></div><div class="pdot"></div><div class="pnum">17</div></div>
+        <div class="port-slot down"><div class="pdot"></div><div class="pdot"></div><div class="pnum">18</div></div>
+        <div class="port-slot up"><div class="pdot"></div><div class="pdot"></div><div class="pnum">19</div></div>
+        <div class="port-slot up"><div class="pdot"></div><div class="pdot"></div><div class="pnum">20</div></div>
+        <div class="port-slot up"><div class="pdot"></div><div class="pdot"></div><div class="pnum">21</div></div>
+        <div class="port-slot off"><div class="pdot"></div><div class="pdot"></div><div class="pnum">22</div></div>
+        <div class="port-slot up"><div class="pdot"></div><div class="pdot"></div><div class="pnum">23</div></div>
+        <div class="port-slot up"><div class="pdot"></div><div class="pdot"></div><div class="pnum">24</div></div>
+      </div>
+      <div class="display">SWITCH</div>
+    </div>
+    <div class="switch-label">24-Port Switch — Ports inside body, single row</div>
+  </div>
+</div>
+
+<!-- OPTION C -->
+<div class="option">
+  <h2>Option C — Schematic / Blueprint</h2>
+  <p class="desc">Minimal wireframe style. Just outlines and status colors. Very lightweight, works well at any scale. No attempt at realism.</p>
+  <div class="switch-scene" style="background: #fafafa;">
+    <div class="switch-c">
+      <div class="c-label">SW-24P</div>
+      <div class="c-port-area">
+        <div class="c-port up">1</div><div class="c-port up">2</div><div class="c-port down">3</div><div class="c-port up">4</div>
+        <div class="c-port off">5</div><div class="c-port up">6</div><div class="c-port up">7</div><div class="c-port down">8</div>
+        <div style="width: 8px;"></div>
+        <div class="c-port up">9</div><div class="c-port up">10</div><div class="c-port up">11</div><div class="c-port down">12</div>
+        <div class="c-port up">13</div><div class="c-port off">14</div><div class="c-port up">15</div><div class="c-port up">16</div>
+        <div style="width: 8px;"></div>
+        <div class="c-port up">17</div><div class="c-port down">18</div><div class="c-port up">19</div><div class="c-port up">20</div>
+        <div class="c-port up">21</div><div class="c-port off">22</div><div class="c-port up">23</div><div class="c-port up">24</div>
+      </div>
+    </div>
+    <div class="switch-label">24-Port Switch — Wireframe outline</div>
+  </div>
+</div>
+
+<!-- OPTION D -->
+<div class="option">
+  <h2>Option D — Realistic 3D</h2>
+  <p class="desc">Gradient shading, subtle reflections, embedded ports in two rows (odd top, even bottom). Closest to real hardware look. LED glow effects.</p>
+  <div class="switch-scene">
+    <div class="switch-d">
+      <div class="d-left">
+        <div class="d-brand">SWITCH</div>
+        <div class="d-leds">
+          <div class="d-led pwr"></div>
+          <div class="d-led sys"></div>
+          <div class="d-led act"></div>
+          <div class="d-led act"></div>
+        </div>
+      </div>
+      <div class="d-ports">
+        <div class="d-port-row">
+          <div class="d-port up"><div class="d-pins"><div class="d-pin"></div><div class="d-pin"></div><div class="d-pin"></div><div class="d-pin"></div></div><div class="d-pnum">1</div></div>
+          <div class="d-port up"><div class="d-pins"><div class="d-pin"></div><div class="d-pin"></div><div class="d-pin"></div><div class="d-pin"></div></div><div class="d-pnum">3</div></div>
+          <div class="d-port down"><div class="d-pins"><div class="d-pin"></div><div class="d-pin"></div><div class="d-pin"></div><div class="d-pin"></div></div><div class="d-pnum">5</div></div>
+          <div class="d-port up"><div class="d-pins"><div class="d-pin"></div><div class="d-pin"></div><div class="d-pin"></div><div class="d-pin"></div></div><div class="d-pnum">7</div></div>
+          <div class="d-port off"><div class="d-pins"><div class="d-pin"></div><div class="d-pin"></div><div class="d-pin"></div><div class="d-pin"></div></div><div class="d-pnum">9</div></div>
+          <div class="d-port up"><div class="d-pins"><div class="d-pin"></div><div class="d-pin"></div><div class="d-pin"></div><div class="d-pin"></div></div><div class="d-pnum">11</div></div>
+          <div style="width: 6px;"></div>
+          <div class="d-port up"><div class="d-pins"><div class="d-pin"></div><div class="d-pin"></div><div class="d-pin"></div><div class="d-pin"></div></div><div class="d-pnum">13</div></div>
+          <div class="d-port up"><div class="d-pins"><div class="d-pin"></div><div class="d-pin"></div><div class="d-pin"></div><div class="d-pin"></div></div><div class="d-pnum">15</div></div>
+          <div class="d-port down"><div class="d-pins"><div class="d-pin"></div><div class="d-pin"></div><div class="d-pin"></div><div class="d-pin"></div></div><div class="d-pnum">17</div></div>
+          <div class="d-port up"><div class="d-pins"><div class="d-pin"></div><div class="d-pin"></div><div class="d-pin"></div><div class="d-pin"></div></div><div class="d-pnum">19</div></div>
+          <div style="width: 6px;"></div>
+          <div class="d-port up"><div class="d-pins"><div class="d-pin"></div><div class="d-pin"></div><div class="d-pin"></div><div class="d-pin"></div></div><div class="d-pnum">21</div></div>
+          <div class="d-port up"><div class="d-pins"><div class="d-pin"></div><div class="d-pin"></div><div class="d-pin"></div><div class="d-pin"></div></div><div class="d-pnum">23</div></div>
+        </div>
+        <div class="d-port-row">
+          <div class="d-port up"><div class="d-pins"><div class="d-pin"></div><div class="d-pin"></div><div class="d-pin"></div><div class="d-pin"></div></div><div class="d-pnum">2</div></div>
+          <div class="d-port down"><div class="d-pins"><div class="d-pin"></div><div class="d-pin"></div><div class="d-pin"></div><div class="d-pin"></div></div><div class="d-pnum">4</div></div>
+          <div class="d-port up"><div class="d-pins"><div class="d-pin"></div><div class="d-pin"></div><div class="d-pin"></div><div class="d-pin"></div></div><div class="d-pnum">6</div></div>
+          <div class="d-port up"><div class="d-pins"><div class="d-pin"></div><div class="d-pin"></div><div class="d-pin"></div><div class="d-pin"></div></div><div class="d-pnum">8</div></div>
+          <div class="d-port off"><div class="d-pins"><div class="d-pin"></div><div class="d-pin"></div><div class="d-pin"></div><div class="d-pin"></div></div><div class="d-pnum">10</div></div>
+          <div class="d-port up"><div class="d-pins"><div class="d-pin"></div><div class="d-pin"></div><div class="d-pin"></div><div class="d-pin"></div></div><div class="d-pnum">12</div></div>
+          <div style="width: 6px;"></div>
+          <div class="d-port up"><div class="d-pins"><div class="d-pin"></div><div class="d-pin"></div><div class="d-pin"></div><div class="d-pin"></div></div><div class="d-pnum">14</div></div>
+          <div class="d-port down"><div class="d-pins"><div class="d-pin"></div><div class="d-pin"></div><div class="d-pin"></div><div class="d-pin"></div></div><div class="d-pnum">16</div></div>
+          <div class="d-port up"><div class="d-pins"><div class="d-pin"></div><div class="d-pin"></div><div class="d-pin"></div><div class="d-pin"></div></div><div class="d-pnum">18</div></div>
+          <div class="d-port up"><div class="d-pins"><div class="d-pin"></div><div class="d-pin"></div><div class="d-pin"></div><div class="d-pin"></div></div><div class="d-pnum">20</div></div>
+          <div style="width: 6px;"></div>
+          <div class="d-port up"><div class="d-pins"><div class="d-pin"></div><div class="d-pin"></div><div class="d-pin"></div><div class="d-pin"></div></div><div class="d-pnum">22</div></div>
+          <div class="d-port off"><div class="d-pins"><div class="d-pin"></div><div class="d-pin"></div><div class="d-pin"></div><div class="d-pin"></div></div><div class="d-pnum">24</div></div>
+        </div>
+      </div>
+      <div class="d-display"><div class="d-screen">24P</div></div>
+    </div>
+    <div class="switch-label">24-Port Switch — Odd row top, Even row bottom, with display</div>
+  </div>
+</div>
+
+</div>
+
+<div style="text-align: center; margin-top: 40px; color: #555; font-size: 13px;">
+  <p>Pick a style (A/B/C/D), or tell me which elements to mix. I'll implement the chosen style in Flutter CustomPainter.</p>
+</div>
+
+</body>
+</html>
