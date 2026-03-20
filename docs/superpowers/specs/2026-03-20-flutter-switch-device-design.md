@@ -31,10 +31,11 @@ Flutter only. No `flutter_svg`, no `path_drawing`, no external packages.
 ```dart
 SwitchDeviceView(
   size: Size(800, 400),
-  format: SwitchFormat.ports24(),
-  portStatuses: {'1': PortStatus.up, '2': PortStatus.down, ...},
+  format: const Switch24P(),              // named preset classes
+  portStatuses: {1: PortStatus.up, 2: PortStatus.down, ...},  // int keys
   isConfig: false,
   onPortHover: (int portNum) {},
+  onPortHoverExit: () {},
   onPortTap: (int portNum) {},
   onSwitchHover: () {},
   onSwitchHoverExit: () {},
@@ -55,7 +56,7 @@ static Map<int, Offset> SwitchDeviceView.getPortPositions(
 );
 ```
 
-Synchronous and deterministic — returns the center position of each port in the coordinate space of the viewport. No layout timing dependency.
+Synchronous and deterministic — returns the **center** position of each port in the coordinate space of the viewport. No layout timing dependency. Internal widget positioning adjusts to top-left by subtracting half the port width/height.
 
 ### Models
 
@@ -77,7 +78,7 @@ class SwitchFormat {
 
 ### Presets
 
-Factory constructors or named classes for all port counts:
+Named preset classes (e.g. `Switch6P()`, `Switch24P()`, `Switch48PStacked()`):
 - Single-unit: 6P, 8P, 10P, 12P, 14P, 16P, 18P, 20P, 22P, 24P, 26P, 28P
 - Stacked: 30P, 32P, 34P, 36P, 38P, 40P, 42P, 44P, 46P, 48P
 - Helper: `switchFormatForPortCount(int portCount, {int? validPorts})`
@@ -86,7 +87,7 @@ Factory constructors or named classes for all port counts:
 
 ### Style: B2 — Clean Modern
 
-- **Switch body:** Gradient background (#5a5a6e → #44445a), rounded corners, elevation shadow via PhysicalShape
+- **Switch body:** Gradient background (#5a5a6e → #44445a), rounded corners, elevation shadow via PhysicalShape. (Note: this is a visual enhancement over the existing flat-color #555557 body.)
 - **LED indicators:** Left side — green (power), yellow (status), grey (inactive)
 - **Ports:** Rounded rectangles with pin detail lines and port number labels inside
 - **Port grouping:** Grouped by 4s with small gaps between groups
@@ -109,12 +110,14 @@ The widget auto-selects layout tier based on port count:
 |------------|--------|------------------|-----------|
 | 6–12 | Single body | 1 row (sequential) | Spacious (18–20px) |
 | 14–28 | Single body | 2 rows (odd top, even bottom) | Scales with count (15–18px) |
-| 30–48 | Stacked two-body | 1 row per body (sequential, 24 per body) | Compact (13px) |
+| 30–48 | Stacked two-body | 2 rows per body (odd top, even bottom, 24 per body) | Compact (13px) |
+
+**Note on Tier 1 (6–12P):** This is a deliberate visual change from the existing `device_topology_view` system, which uses two rows for all port counts. The new single-row layout for small switches is cleaner and was chosen during design brainstorming. The presets for 6–12P will have new single-row offset data (all ports at the same Y position). Port sizes are derived dynamically from the offset spacing and port count, not from a preset field.
 
 ### Stacked Switch Behavior
 
 - One `SwitchDeviceView` widget renders two switch bodies vertically with a gap
-- Active unit: full opacity + green border highlight
+- Active unit: full opacity + green border highlight (new visual enhancement; existing code only uses opacity)
 - Inactive unit: 30% opacity
 - Tap on either body to toggle active unit
 - `stackedPart` controls which unit is active (1 = upper, 2 = lower, 0 = none)
@@ -144,7 +147,7 @@ lib/
 ### Component Boundaries
 
 - **`switch_layout.dart`** — Pure calculation. `SwitchFormat` + viewport `Size` → `Map<int, Offset>` port center positions. Also determines adaptive tier. No widget dependencies.
-- **`switch_body_painter.dart`** — Draws chassis only (gradient body, LEDs, rounded corners). Parameterized by `totalPorts` (LED count) and tier (body height). No port drawing.
+- **`switch_body_painter.dart`** — Draws chassis only (gradient body, LEDs, rounded corners). Parameterized by `totalPorts` (LED count), tier (body height), and `isActive` (green border for stacked selection). No port drawing.
 - **`port_painter.dart`** — Draws one port icon. Parameterized by color, pin detail visibility. Static helper `colorForStatus()` maps state to color.
 - **`port_widget.dart`** — Wraps `port_painter` with hover float animation (300ms easeInOut), tap handler, port number label overlay. Positioned absolutely in parent Stack.
 - **`switch_device_view.dart`** — Composes body + ports in a Stack. Owns: hover/tap state management, stacked toggle logic, adaptive tier selection, `getPortPositions()` static method.
@@ -159,7 +162,7 @@ The existing normalized offset system is preserved inside the package:
 4. Scale: `portY = centerPosition.dy + centerSize × offset.dy`
 5. Return map of portNumber → center Offset
 
-For single-row tiers (6–12P and stacked), ports are auto-arranged sequentially within the body bounds rather than using odd/even offset arrays.
+For Tier 1 (6–12P), presets will use single-row offset data (all ports at the same Y position) so the odd/even lookup still works — both arrays share the same Y value. All tiers use the same offset-based calculation; the visual difference comes from the preset data itself.
 
 ## Integration Plan
 
