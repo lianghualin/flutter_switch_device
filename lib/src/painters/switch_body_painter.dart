@@ -9,12 +9,17 @@ import 'package:flutter/material.dart';
 /// - A display panel (light grey screen area)
 ///
 /// Parameterized by [totalPorts] to scale the number of indicator LEDs.
+/// When [isActive] is true, a green border is drawn around the chassis to
+/// indicate the unit is the currently-selected (stacked active) switch.
 class SwitchBodyPainter extends CustomPainter {
   final int totalPorts;
+  final bool isActive;
 
-  SwitchBodyPainter({required this.totalPorts});
+  SwitchBodyPainter({required this.totalPorts, this.isActive = false});
 
-  static const _bodyColor = Color(0xFF555557);
+  static const _bodyGradientStart = Color(0xFF5A5A6E);
+  static const _bodyGradientEnd = Color(0xFF44445A);
+  static const _activeColor = Color(0xFF2CC339);
   static const _darkDetail = Color(0xFF414142);
   static const _screenBorder = Color(0xFFEDEEF0);
   static const _screenFill = Color(0xFFE8E9EB);
@@ -25,6 +30,20 @@ class SwitchBodyPainter extends CustomPainter {
   void paint(Canvas canvas, Size size) {
     final w = size.width;
     final h = size.height;
+    final cornerR = h * 0.15;
+
+    // Gradient background
+    final gradientPaint = Paint()
+      ..shader = LinearGradient(
+        begin: Alignment.topCenter,
+        end: Alignment.bottomCenter,
+        colors: const [_bodyGradientStart, _bodyGradientEnd],
+      ).createShader(Rect.fromLTWH(0, 0, w, h));
+    canvas.drawRRect(
+      RRect.fromRectAndRadius(
+          Rect.fromLTWH(0, 0, w, h), Radius.circular(cornerR)),
+      gradientPaint,
+    );
 
     // -- Left panel metrics --
     final leftPanelW = w * 0.42;
@@ -90,32 +109,53 @@ class SwitchBodyPainter extends CustomPainter {
       ),
       Paint()..color = _screenFill,
     );
+
+    // Active border (stacked highlight) — drawn last so it appears on top
+    if (isActive) {
+      final borderPaint = Paint()
+        ..color = _activeColor
+        ..style = PaintingStyle.stroke
+        ..strokeWidth = 3;
+      canvas.drawRRect(
+        RRect.fromRectAndRadius(
+          Rect.fromLTWH(1.5, 1.5, w - 3, h - 3),
+          Radius.circular(cornerR),
+        ),
+        borderPaint,
+      );
+    }
   }
 
   @override
-  bool shouldRepaint(SwitchBodyPainter old) => old.totalPorts != totalPorts;
+  bool shouldRepaint(SwitchBodyPainter old) =>
+      old.totalPorts != totalPorts || old.isActive != isActive;
 }
 
 /// Renders a switch body inside a [PhysicalShape] for elevation & shadow.
+///
+/// Pass [isActive] to highlight this unit with a green border (used when
+/// this switch is the active unit in a stack view).
 class SwitchBodyWidget extends StatelessWidget {
   final int totalPorts;
   final double elevation;
+  final bool isActive;
 
   const SwitchBodyWidget({
     super.key,
     required this.totalPorts,
     this.elevation = 5,
+    this.isActive = false,
   });
 
   @override
   Widget build(BuildContext context) {
     return PhysicalShape(
       clipper: _RoundedRectClipper(),
-      color: SwitchBodyPainter._bodyColor,
+      color: SwitchBodyPainter._bodyGradientEnd,
       elevation: elevation,
       shadowColor: Colors.black,
       child: CustomPaint(
-        painter: SwitchBodyPainter(totalPorts: totalPorts),
+        painter: SwitchBodyPainter(totalPorts: totalPorts, isActive: isActive),
         child: const SizedBox.expand(),
       ),
     );
