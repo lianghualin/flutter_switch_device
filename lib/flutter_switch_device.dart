@@ -1,6 +1,6 @@
 /// A Flutter widget that renders network switch devices with ports,
 /// fully programmatic — no SVG assets required.
-library flutter_switch_device;
+library;
 
 export 'src/models/port_status.dart';
 export 'src/models/switch_format.dart';

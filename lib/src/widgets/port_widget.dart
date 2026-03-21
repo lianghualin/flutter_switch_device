@@ -92,7 +92,7 @@ class _PortWidgetState extends State<PortWidget>
                           d.label ?? '${d.portNumber}',
                           style: TextStyle(
                             color: Colors.white,
-                            fontSize: (d.width * 0.38).clamp(6, 12),
+                            fontSize: (d.width * 0.38).clamp(6.0, 12.0),
                             fontWeight: FontWeight.bold,
                             height: 1,
                           ),

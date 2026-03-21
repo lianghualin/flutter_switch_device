@@ -404,16 +404,6 @@ const List<Offset> _stackedOddPortOffsets = [
   Offset(0.865, 0.235),
 ];
 
-SwitchFormat _stacked({required int validPorts}) => SwitchFormat(
-      evenPortOffsetR: _stackedEvenPortOffsets,
-      oddPortOffsetR: _stackedOddPortOffsets,
-      hSizeFactor: 0.4,
-      wSizeFactor: 1,
-      totalPortsNum: 48,
-      validPortsNum: validPorts,
-      isStacked: true,
-    );
-
 class Switch30PStacked extends SwitchFormat {
   const Switch30PStacked()
       : super(

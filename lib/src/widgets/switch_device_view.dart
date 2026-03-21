@@ -1,5 +1,3 @@
-import 'dart:ui' show Size, Offset;
-
 import 'package:flutter/material.dart';
 import '../layout/switch_layout.dart';
 import '../models/port_status.dart';

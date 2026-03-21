@@ -1,8 +1,5 @@
-import 'dart:ui';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:flutter_switch_device/src/models/port_status.dart';
 import 'package:flutter_switch_device/src/presets/switch_presets.dart';
 import 'package:flutter_switch_device/src/widgets/switch_device_view.dart';
 
