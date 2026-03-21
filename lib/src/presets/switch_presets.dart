@@ -10,14 +10,14 @@ class Switch6P extends SwitchFormat {
   const Switch6P()
       : super(
           evenPortOffsetR: const [
-            Offset(0.53, 0.223),
-            Offset(0.58, 0.223),
-            Offset(0.63, 0.223),
+            Offset(0.53, 0.204),
+            Offset(0.58, 0.204),
+            Offset(0.63, 0.204),
           ],
           oddPortOffsetR: const [
-            Offset(0.53, 0.185),
-            Offset(0.58, 0.185),
-            Offset(0.63, 0.185),
+            Offset(0.53, 0.204),
+            Offset(0.58, 0.204),
+            Offset(0.63, 0.204),
           ],
           totalPortsNum: 6,
         );
@@ -27,16 +27,16 @@ class Switch8P extends SwitchFormat {
   const Switch8P()
       : super(
           evenPortOffsetR: const [
-            Offset(0.505, 0.223),
-            Offset(0.555, 0.223),
-            Offset(0.60, 0.223),
-            Offset(0.65, 0.223),
+            Offset(0.505, 0.204),
+            Offset(0.555, 0.204),
+            Offset(0.60, 0.204),
+            Offset(0.65, 0.204),
           ],
           oddPortOffsetR: const [
-            Offset(0.505, 0.185),
-            Offset(0.555, 0.185),
-            Offset(0.60, 0.185),
-            Offset(0.65, 0.185),
+            Offset(0.505, 0.204),
+            Offset(0.555, 0.204),
+            Offset(0.60, 0.204),
+            Offset(0.65, 0.204),
           ],
           totalPortsNum: 8,
         );
@@ -46,18 +46,18 @@ class Switch10P extends SwitchFormat {
   const Switch10P()
       : super(
           evenPortOffsetR: const [
-            Offset(0.47, 0.223),
-            Offset(0.52, 0.223),
-            Offset(0.57, 0.223),
-            Offset(0.615, 0.223),
-            Offset(0.68, 0.223),
+            Offset(0.47, 0.204),
+            Offset(0.52, 0.204),
+            Offset(0.57, 0.204),
+            Offset(0.615, 0.204),
+            Offset(0.68, 0.204),
           ],
           oddPortOffsetR: const [
-            Offset(0.47, 0.185),
-            Offset(0.52, 0.185),
-            Offset(0.57, 0.185),
-            Offset(0.615, 0.185),
-            Offset(0.68, 0.185),
+            Offset(0.47, 0.204),
+            Offset(0.52, 0.204),
+            Offset(0.57, 0.204),
+            Offset(0.615, 0.204),
+            Offset(0.68, 0.204),
           ],
           totalPortsNum: 10,
         );
@@ -67,20 +67,20 @@ class Switch12P extends SwitchFormat {
   const Switch12P()
       : super(
           evenPortOffsetR: const [
-            Offset(0.44, 0.223),
-            Offset(0.49, 0.223),
-            Offset(0.54, 0.223),
-            Offset(0.59, 0.223),
-            Offset(0.655, 0.223),
-            Offset(0.705, 0.223),
+            Offset(0.44, 0.204),
+            Offset(0.49, 0.204),
+            Offset(0.54, 0.204),
+            Offset(0.59, 0.204),
+            Offset(0.655, 0.204),
+            Offset(0.705, 0.204),
           ],
           oddPortOffsetR: const [
-            Offset(0.44, 0.185),
-            Offset(0.49, 0.185),
-            Offset(0.54, 0.185),
-            Offset(0.59, 0.185),
-            Offset(0.655, 0.185),
-            Offset(0.705, 0.185),
+            Offset(0.44, 0.204),
+            Offset(0.49, 0.204),
+            Offset(0.54, 0.204),
+            Offset(0.59, 0.204),
+            Offset(0.655, 0.204),
+            Offset(0.705, 0.204),
           ],
           totalPortsNum: 12,
         );
