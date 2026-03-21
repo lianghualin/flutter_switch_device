@@ -1,12 +1,10 @@
 import 'package:flutter_test/flutter_test.dart';
-
 import 'package:flutter_switch_device/flutter_switch_device.dart';
 
 void main() {
-  test('adds one to input values', () {
-    final calculator = Calculator();
-    expect(calculator.addOne(2), 3);
-    expect(calculator.addOne(-7), -6);
-    expect(calculator.addOne(0), 1);
+  test('public API exports are accessible', () {
+    expect(PortStatus.up, isNotNull);
+    expect(const Switch24P(), isA<SwitchFormat>());
+    expect(switchFormatForPortCount(6), isA<SwitchFormat>());
   });
 }
