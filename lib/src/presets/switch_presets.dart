@@ -6,18 +6,23 @@ import '../models/switch_format.dart';
 // Single-unit switch presets (6P – 28P)
 // ---------------------------------------------------------------------------
 
+// Tier 1 single-row presets: ports are sequential (1,2,3,4,...) left to right.
+// Odd offsets hold positions for ports 1,3,5,... and even for 2,4,6,...
+// Within-group spacing: 0.045, between-group gap: 0.060, grouped by 4s.
+
 class Switch6P extends SwitchFormat {
   const Switch6P()
       : super(
-          evenPortOffsetR: const [
-            Offset(0.53, 0.204),
-            Offset(0.58, 0.204),
-            Offset(0.63, 0.204),
-          ],
+          // Sequential: 1,2,3,4 | 5,6
           oddPortOffsetR: const [
-            Offset(0.53, 0.204),
-            Offset(0.58, 0.204),
-            Offset(0.63, 0.204),
+            Offset(0.460, 0.204), // port 1
+            Offset(0.550, 0.204), // port 3
+            Offset(0.655, 0.204), // port 5
+          ],
+          evenPortOffsetR: const [
+            Offset(0.505, 0.204), // port 2
+            Offset(0.595, 0.204), // port 4
+            Offset(0.700, 0.204), // port 6
           ],
           totalPortsNum: 6,
         );
@@ -26,17 +31,18 @@ class Switch6P extends SwitchFormat {
 class Switch8P extends SwitchFormat {
   const Switch8P()
       : super(
-          evenPortOffsetR: const [
-            Offset(0.505, 0.204),
-            Offset(0.555, 0.204),
-            Offset(0.60, 0.204),
-            Offset(0.65, 0.204),
-          ],
+          // Sequential: 1,2,3,4 | 5,6,7,8
           oddPortOffsetR: const [
-            Offset(0.505, 0.204),
-            Offset(0.555, 0.204),
-            Offset(0.60, 0.204),
-            Offset(0.65, 0.204),
+            Offset(0.390, 0.204), // port 1
+            Offset(0.480, 0.204), // port 3
+            Offset(0.585, 0.204), // port 5
+            Offset(0.675, 0.204), // port 7
+          ],
+          evenPortOffsetR: const [
+            Offset(0.435, 0.204), // port 2
+            Offset(0.525, 0.204), // port 4
+            Offset(0.630, 0.204), // port 6
+            Offset(0.720, 0.204), // port 8
           ],
           totalPortsNum: 8,
         );
@@ -45,19 +51,20 @@ class Switch8P extends SwitchFormat {
 class Switch10P extends SwitchFormat {
   const Switch10P()
       : super(
-          evenPortOffsetR: const [
-            Offset(0.47, 0.204),
-            Offset(0.52, 0.204),
-            Offset(0.57, 0.204),
-            Offset(0.615, 0.204),
-            Offset(0.68, 0.204),
-          ],
+          // Sequential: 1,2,3,4 | 5,6,7,8 | 9,10
           oddPortOffsetR: const [
-            Offset(0.47, 0.204),
-            Offset(0.52, 0.204),
-            Offset(0.57, 0.204),
-            Offset(0.615, 0.204),
-            Offset(0.68, 0.204),
+            Offset(0.315, 0.204), // port 1
+            Offset(0.405, 0.204), // port 3
+            Offset(0.510, 0.204), // port 5
+            Offset(0.600, 0.204), // port 7
+            Offset(0.705, 0.204), // port 9
+          ],
+          evenPortOffsetR: const [
+            Offset(0.360, 0.204), // port 2
+            Offset(0.450, 0.204), // port 4
+            Offset(0.555, 0.204), // port 6
+            Offset(0.645, 0.204), // port 8
+            Offset(0.750, 0.204), // port 10
           ],
           totalPortsNum: 10,
         );
@@ -66,21 +73,22 @@ class Switch10P extends SwitchFormat {
 class Switch12P extends SwitchFormat {
   const Switch12P()
       : super(
-          evenPortOffsetR: const [
-            Offset(0.44, 0.204),
-            Offset(0.49, 0.204),
-            Offset(0.54, 0.204),
-            Offset(0.59, 0.204),
-            Offset(0.655, 0.204),
-            Offset(0.705, 0.204),
-          ],
+          // Sequential: 1,2,3,4 | 5,6,7,8 | 9,10,11,12
           oddPortOffsetR: const [
-            Offset(0.44, 0.204),
-            Offset(0.49, 0.204),
-            Offset(0.54, 0.204),
-            Offset(0.59, 0.204),
-            Offset(0.655, 0.204),
-            Offset(0.705, 0.204),
+            Offset(0.250, 0.204), // port 1
+            Offset(0.340, 0.204), // port 3
+            Offset(0.445, 0.204), // port 5
+            Offset(0.535, 0.204), // port 7
+            Offset(0.640, 0.204), // port 9
+            Offset(0.730, 0.204), // port 11
+          ],
+          evenPortOffsetR: const [
+            Offset(0.295, 0.204), // port 2
+            Offset(0.385, 0.204), // port 4
+            Offset(0.490, 0.204), // port 6
+            Offset(0.580, 0.204), // port 8
+            Offset(0.685, 0.204), // port 10
+            Offset(0.775, 0.204), // port 12
           ],
           totalPortsNum: 12,
         );
