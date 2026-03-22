@@ -125,12 +125,18 @@ class SwitchLayout {
   }
 
   static double _computePortWidth(SwitchFormat format, double cs) {
-    final offsets = format.oddPortOffsetR;
-    if (offsets.length < 2) return cs * 0.04;
+    // Merge all port X offsets and sort to find the true minimum spacing
+    // between any two adjacent ports (not just odd-to-odd).
+    final allX = <double>[
+      for (final o in format.oddPortOffsetR) o.dx,
+      for (final o in format.evenPortOffsetR) o.dx,
+    ]..sort();
+
+    if (allX.length < 2) return cs * 0.04;
 
     double minSpacing = double.infinity;
-    for (int i = 1; i < offsets.length; i++) {
-      final spacing = (offsets[i].dx - offsets[i - 1].dx).abs();
+    for (int i = 1; i < allX.length; i++) {
+      final spacing = allX[i] - allX[i - 1];
       if (spacing > 0 && spacing < minSpacing) {
         minSpacing = spacing;
       }
