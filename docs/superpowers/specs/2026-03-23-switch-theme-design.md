@@ -150,14 +150,23 @@ SwitchDeviceView (resolves theme from context or explicit param)
 
 | Action | File | Change |
 |--------|------|--------|
-| Create | `lib/src/models/switch_device_theme.dart` | Theme data class with dark/light constructors |
-| Modify | `lib/src/painters/switch_body_painter.dart` | Replace hardcoded colors with theme fields |
+| Create | `lib/src/models/switch_device_theme.dart` | Theme data class with dark/light constructors, `==`/`hashCode` |
+| Modify | `lib/src/painters/switch_body_painter.dart` | `SwitchBodyPainter`: accept `SwitchDeviceTheme`, replace all hardcoded colors, update `shouldRepaint` to compare theme. `SwitchBodyWidget`: accept theme, pass `theme.bodyGradientEnd` to `PhysicalShape(color:)` and `Colors.black.withValues(alpha: theme.shadowOpacity)` to `shadowColor` |
 | Modify | `lib/src/painters/port_painter.dart` | `colorForStatus` takes theme instead of hardcoded colors |
 | Modify | `lib/src/widgets/port_widget.dart` | Accept theme, derive label color from port color brightness |
 | Modify | `lib/src/widgets/switch_device_view.dart` | Accept optional `theme`, resolve from `BuildContext` |
-| Modify | `lib/src/layout/switch_layout.dart` | No change (pure calculation, no colors) |
 | Modify | `lib/flutter_switch_device.dart` | Export `SwitchDeviceTheme` |
 | Modify | `example/lib/main.dart` | Add dark/light theme toggle |
+
+### Implementation Details
+
+**`SwitchDeviceTheme` equality:** The class must implement `operator ==` and `hashCode` (comparing all fields) so that `shouldRepaint` and Flutter's widget rebuild diffing work correctly.
+
+**`SwitchBodyPainter.shouldRepaint`:** Must compare `theme` in addition to `totalPorts` and `isActive`. With `==` on the theme class, this becomes: `old.totalPorts != totalPorts || old.isActive != isActive || old.theme != theme`.
+
+**`PhysicalShape` shadow wiring:** `SwitchBodyWidget.build` currently passes `SwitchBodyPainter._bodyGradientEnd` as `PhysicalShape(color:)` and `Colors.black` as `shadowColor`. Both must update:
+- `color: theme.bodyGradientEnd`
+- `shadowColor: Colors.black.withValues(alpha: theme.shadowOpacity)`
 
 ### What Does NOT Change
 
