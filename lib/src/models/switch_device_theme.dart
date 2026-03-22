@@ -41,16 +41,16 @@ class SwitchDeviceTheme {
         dividerColor = const Color(0xFF414142),
         shadowOpacity = 0.4;
 
-  /// Light theme — lighter body, adjusted port colors for contrast.
+  /// Light theme — lighter body, same port colors as dark for consistency.
   const SwitchDeviceTheme.light()
       : bodyGradientStart = const Color(0xFFD8DAE0),
         bodyGradientEnd = const Color(0xFFC2C4CC),
-        portUp = const Color(0xFF34A853),
-        portDown = const Color(0xFFBDBDBD),
-        portUnknown = const Color(0xFFE0E0E0),
+        portUp = const Color(0xFF2CC339),
+        portDown = const Color(0xFF9E9E9E),
+        portUnknown = const Color(0xFF333333),
         portLabelOnLight = const Color(0xFF444444),
         portLabelOnDark = const Color(0xFFFFFFFF),
-        activeColor = const Color(0xFF34A853),
+        activeColor = const Color(0xFF2CC339),
         ledGreen = const Color(0xFF34A853),
         ledYellow = const Color(0xFFE8A317),
         ledInactive = const Color(0xFFB0B2BA),

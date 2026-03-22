@@ -35,12 +35,10 @@ void main() {
       );
     });
 
-    test('light theme up returns adjusted green', () {
-      expect(light.portColorForStatus(PortStatus.up), const Color(0xFF34A853));
-    });
-
-    test('light theme down returns light grey', () {
-      expect(light.portColorForStatus(PortStatus.down), const Color(0xFFBDBDBD));
+    test('light theme uses same port colors as dark', () {
+      expect(light.portColorForStatus(PortStatus.up), dark.portColorForStatus(PortStatus.up));
+      expect(light.portColorForStatus(PortStatus.down), dark.portColorForStatus(PortStatus.down));
+      expect(light.portColorForStatus(PortStatus.unknown), dark.portColorForStatus(PortStatus.unknown));
     });
   });
 
