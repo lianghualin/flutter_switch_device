@@ -18,7 +18,7 @@ class PortPainter extends CustomPainter {
 
     // Pin detail lines (subtle darker lines inside the port)
     final linePaint = Paint()
-      ..color = Color.lerp(color, Colors.black, 0.25)!
+      ..color = Color.lerp(color, Colors.black, 0.10)!
       ..strokeWidth = 1.0;
 
     const lineCount = 3;
