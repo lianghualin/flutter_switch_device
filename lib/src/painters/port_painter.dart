@@ -1,26 +1,10 @@
 import 'package:flutter/material.dart';
-import '../models/port_status.dart';
 
 /// Draws a single port icon as a rounded rectangle with pin detail lines.
 class PortPainter extends CustomPainter {
   PortPainter({required this.color});
 
   final Color color;
-
-  /// Maps [PortStatus] to the appropriate display color.
-  static Color colorForStatus(
-    PortStatus status, {
-    bool isConfig = false,
-    bool isInvalid = false,
-  }) {
-    if (isConfig) return const Color(0xFF9E9E9E);
-    if (isInvalid) return const Color(0xFF333333);
-    return switch (status) {
-      PortStatus.up => const Color(0xFF2CC339),
-      PortStatus.down => const Color(0xFF9E9E9E),
-      PortStatus.unknown => const Color(0xFF333333),
-    };
-  }
 
   @override
   void paint(Canvas canvas, Size size) {

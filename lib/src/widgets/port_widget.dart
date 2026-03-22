@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../models/port_data.dart';
+import '../models/switch_device_theme.dart';
 import '../painters/port_painter.dart';
 
 /// Renders a single port with hover float animation and tap handling.
@@ -7,6 +8,7 @@ class PortWidget extends StatefulWidget {
   const PortWidget({
     super.key,
     required this.data,
+    required this.theme,
     this.onHover,
     this.onHoverExit,
     this.onTap,
@@ -14,6 +16,7 @@ class PortWidget extends StatefulWidget {
   });
 
   final PortData data;
+  final SwitchDeviceTheme theme;
   final VoidCallback? onHover;
   final VoidCallback? onHoverExit;
   final VoidCallback? onTap;
@@ -49,11 +52,12 @@ class _PortWidgetState extends State<PortWidget>
   @override
   Widget build(BuildContext context) {
     final d = widget.data;
-    final color = PortPainter.colorForStatus(
+    final portColor = widget.theme.portColorForStatus(
       d.status,
       isConfig: widget.isConfig,
       isInvalid: d.isInvalid,
     );
+    final labelColor = widget.theme.labelColorFor(portColor);
 
     return Positioned(
       left: d.position.dx,
@@ -83,7 +87,7 @@ class _PortWidgetState extends State<PortWidget>
                 child: Stack(
                   children: [
                     CustomPaint(
-                      painter: PortPainter(color: color),
+                      painter: PortPainter(color: portColor),
                       child: const SizedBox.expand(),
                     ),
                     if (d.showLabel)
@@ -91,7 +95,7 @@ class _PortWidgetState extends State<PortWidget>
                         child: Text(
                           d.label ?? '${d.portNumber}',
                           style: TextStyle(
-                            color: Colors.white,
+                            color: labelColor,
                             fontSize: (d.width * 0.38).clamp(6.0, 12.0),
                             fontWeight: FontWeight.bold,
                             height: 1,

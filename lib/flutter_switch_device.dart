@@ -3,6 +3,7 @@
 library;
 
 export 'src/models/port_status.dart';
+export 'src/models/switch_device_theme.dart';
 export 'src/models/switch_format.dart';
 export 'src/presets/switch_presets.dart';
 export 'src/widgets/switch_device_view.dart';

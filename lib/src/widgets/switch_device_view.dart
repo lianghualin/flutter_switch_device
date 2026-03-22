@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../layout/switch_layout.dart';
 import '../models/port_status.dart';
+import '../models/switch_device_theme.dart';
 import '../models/switch_format.dart';
 import '../painters/switch_body_painter.dart';
 import 'port_widget.dart';
@@ -10,6 +11,8 @@ import 'port_widget.dart';
 /// For single-unit switches (6–28P), renders one body with ports overlaid.
 /// For stacked switches (30–48P), renders two bodies vertically with a gap;
 /// tap either body to toggle the active unit.
+///
+/// When [theme] is null, the widget auto-detects from [Theme.of(context).brightness].
 class SwitchDeviceView extends StatelessWidget {
   const SwitchDeviceView({
     super.key,
@@ -24,6 +27,7 @@ class SwitchDeviceView extends StatelessWidget {
     this.onSwitchHoverExit,
     this.stackedPart = 0,
     this.onStackedPartChanged,
+    this.theme,
   });
 
   final Size size;
@@ -38,6 +42,9 @@ class SwitchDeviceView extends StatelessWidget {
   final int stackedPart;
   final ValueChanged<int>? onStackedPartChanged;
 
+  /// Optional theme override. When null, auto-detects from app brightness.
+  final SwitchDeviceTheme? theme;
+
   /// Returns port center positions for the given format and viewport size.
   static Map<int, Offset> getPortPositions(
     SwitchFormat format,
@@ -48,6 +55,11 @@ class SwitchDeviceView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final resolvedTheme = theme ??
+        (Theme.of(context).brightness == Brightness.dark
+            ? const SwitchDeviceTheme.dark()
+            : const SwitchDeviceTheme.light());
+
     final layout = SwitchLayout.compute(
       format: format,
       viewportSize: size,
@@ -67,12 +79,13 @@ class SwitchDeviceView extends StatelessWidget {
           children: [
             // Body/bodies
             for (int i = 0; i < layout.bodyRects.length; i++)
-              _buildBody(layout, i),
+              _buildBody(layout, i, resolvedTheme),
 
             // Ports
             for (final portData in layout.portDataList)
               PortWidget(
                 data: portData,
+                theme: resolvedTheme,
                 isConfig: isConfig,
                 onHover: () => onPortHover?.call(portData.portNumber),
                 onHoverExit: onPortHoverExit,
@@ -84,7 +97,11 @@ class SwitchDeviceView extends StatelessWidget {
     );
   }
 
-  Widget _buildBody(SwitchLayoutResult layout, int bodyIndex) {
+  Widget _buildBody(
+    SwitchLayoutResult layout,
+    int bodyIndex,
+    SwitchDeviceTheme resolvedTheme,
+  ) {
     final rect = layout.bodyRects[bodyIndex];
     final isUpper = bodyIndex == 0;
     final portsPerBody = format.isStacked ? 24 : format.totalPortsNum;
@@ -114,6 +131,7 @@ class SwitchDeviceView extends StatelessWidget {
           child: SwitchBodyWidget(
             totalPorts: portsPerBody,
             isActive: isActive,
+            theme: resolvedTheme,
           ),
         ),
       ),

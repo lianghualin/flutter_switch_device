@@ -1,27 +1,25 @@
 import 'package:flutter/material.dart';
 
+import '../models/switch_device_theme.dart';
+
 /// Draws a generic network switch chassis.
 ///
 /// Visual structure (left to right):
-/// - Indicator LEDs (green power, yellow status, grey port indicators)
-/// - Two horizontal status bars
-/// - A display panel (light grey screen area)
+/// - Narrow indicator panel with LEDs (power, status, inactive)
+/// - Vertical divider
+/// - Port area (gradient body background)
 ///
-/// Parameterized by [totalPorts] to scale the number of indicator LEDs.
-/// When [isActive] is true, a green border is drawn around the chassis to
-/// indicate the unit is the currently-selected (stacked active) switch.
+/// All colors are sourced from [theme].
 class SwitchBodyPainter extends CustomPainter {
+  SwitchBodyPainter({
+    required this.totalPorts,
+    required this.theme,
+    this.isActive = false,
+  });
+
   final int totalPorts;
   final bool isActive;
-
-  SwitchBodyPainter({required this.totalPorts, this.isActive = false});
-
-  static const _bodyGradientStart = Color(0xFF5A5A6E);
-  static const _bodyGradientEnd = Color(0xFF44445A);
-  static const _activeColor = Color(0xFF2CC339);
-  static const _darkDetail = Color(0xFF414142);
-  static const _ledGreen = Color(0xFF49B87D);
-  static const _ledYellow = Color(0xFFF0CC18);
+  final SwitchDeviceTheme theme;
 
   @override
   void paint(Canvas canvas, Size size) {
@@ -34,7 +32,7 @@ class SwitchBodyPainter extends CustomPainter {
       ..shader = LinearGradient(
         begin: Alignment.topCenter,
         end: Alignment.bottomCenter,
-        colors: const [_bodyGradientStart, _bodyGradientEnd],
+        colors: [theme.bodyGradientStart, theme.bodyGradientEnd],
       ).createShader(Rect.fromLTWH(0, 0, w, h));
     canvas.drawRRect(
       RRect.fromRectAndRadius(
@@ -51,21 +49,21 @@ class SwitchBodyPainter extends CustomPainter {
     canvas.drawCircle(
       Offset(panelCenterX, h * 0.28),
       ledRadius,
-      Paint()..color = _ledGreen,
+      Paint()..color = theme.ledGreen,
     );
 
     // Status LED (yellow)
     canvas.drawCircle(
       Offset(panelCenterX, h * 0.50),
       ledRadius,
-      Paint()..color = _ledYellow,
+      Paint()..color = theme.ledYellow,
     );
 
-    // Inactive LED (grey)
+    // Inactive LED
     canvas.drawCircle(
       Offset(panelCenterX, h * 0.72),
       ledRadius,
-      Paint()..color = _darkDetail,
+      Paint()..color = theme.ledInactive,
     );
 
     // -- Vertical divider between indicator panel and port area --
@@ -74,14 +72,14 @@ class SwitchBodyPainter extends CustomPainter {
       Offset(dividerX, h * 0.15),
       Offset(dividerX, h * 0.85),
       Paint()
-        ..color = _darkDetail
+        ..color = theme.dividerColor
         ..strokeWidth = 1.5,
     );
 
     // Active border (stacked highlight) — drawn last so it appears on top
     if (isActive) {
       final borderPaint = Paint()
-        ..color = _activeColor
+        ..color = theme.activeColor
         ..style = PaintingStyle.stroke
         ..strokeWidth = 3;
       canvas.drawRRect(
@@ -96,34 +94,39 @@ class SwitchBodyPainter extends CustomPainter {
 
   @override
   bool shouldRepaint(SwitchBodyPainter old) =>
-      old.totalPorts != totalPorts || old.isActive != isActive;
+      old.totalPorts != totalPorts ||
+      old.isActive != isActive ||
+      old.theme != theme;
 }
 
 /// Renders a switch body inside a [PhysicalShape] for elevation & shadow.
-///
-/// Pass [isActive] to highlight this unit with a green border (used when
-/// this switch is the active unit in a stack view).
 class SwitchBodyWidget extends StatelessWidget {
-  final int totalPorts;
-  final double elevation;
-  final bool isActive;
-
   const SwitchBodyWidget({
     super.key,
     required this.totalPorts,
+    required this.theme,
     this.elevation = 5,
     this.isActive = false,
   });
+
+  final int totalPorts;
+  final double elevation;
+  final bool isActive;
+  final SwitchDeviceTheme theme;
 
   @override
   Widget build(BuildContext context) {
     return PhysicalShape(
       clipper: _RoundedRectClipper(),
-      color: SwitchBodyPainter._bodyGradientEnd,
+      color: theme.bodyGradientEnd,
       elevation: elevation,
-      shadowColor: Colors.black,
+      shadowColor: Colors.black.withValues(alpha: theme.shadowOpacity),
       child: CustomPaint(
-        painter: SwitchBodyPainter(totalPorts: totalPorts, isActive: isActive),
+        painter: SwitchBodyPainter(
+          totalPorts: totalPorts,
+          isActive: isActive,
+          theme: theme,
+        ),
         child: const SizedBox.expand(),
       ),
     );

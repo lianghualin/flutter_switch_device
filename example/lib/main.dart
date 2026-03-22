@@ -5,24 +5,52 @@ import 'package:flutter_switch_device/flutter_switch_device.dart';
 
 void main() => runApp(const ExampleApp());
 
-class ExampleApp extends StatelessWidget {
+class ExampleApp extends StatefulWidget {
   const ExampleApp({super.key});
+
+  @override
+  State<ExampleApp> createState() => _ExampleAppState();
+}
+
+class _ExampleAppState extends State<ExampleApp> {
+  ThemeMode _themeMode = ThemeMode.dark;
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'flutter_switch_device demo',
+      themeMode: _themeMode,
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.blueGrey),
+        colorScheme: ColorScheme.fromSeed(
+          seedColor: Colors.blueGrey,
+          brightness: Brightness.light,
+        ),
         useMaterial3: true,
       ),
-      home: const DemoPage(),
+      darkTheme: ThemeData(
+        colorScheme: ColorScheme.fromSeed(
+          seedColor: Colors.blueGrey,
+          brightness: Brightness.dark,
+        ),
+        useMaterial3: true,
+      ),
+      home: DemoPage(
+        themeMode: _themeMode,
+        onThemeModeChanged: (mode) => setState(() => _themeMode = mode),
+      ),
     );
   }
 }
 
 class DemoPage extends StatefulWidget {
-  const DemoPage({super.key});
+  const DemoPage({
+    super.key,
+    required this.themeMode,
+    required this.onThemeModeChanged,
+  });
+
+  final ThemeMode themeMode;
+  final ValueChanged<ThemeMode> onThemeModeChanged;
 
   @override
   State<DemoPage> createState() => _DemoPageState();
@@ -103,6 +131,16 @@ class _DemoPageState extends State<DemoPage> {
                       onChanged: (v) => setState(() => _isConfig = v),
                     ),
                   ],
+                ),
+                SegmentedButton<ThemeMode>(
+                  segments: const [
+                    ButtonSegment(value: ThemeMode.dark, label: Text('Dark')),
+                    ButtonSegment(value: ThemeMode.light, label: Text('Light')),
+                    ButtonSegment(value: ThemeMode.system, label: Text('Auto')),
+                  ],
+                  selected: {widget.themeMode},
+                  onSelectionChanged: (s) =>
+                      widget.onThemeModeChanged(s.first),
                 ),
                 if (isStacked)
                   SegmentedButton<int>(

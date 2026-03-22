@@ -4,9 +4,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter_switch_device/src/models/port_data.dart';
 import 'package:flutter_switch_device/src/models/port_status.dart';
+import 'package:flutter_switch_device/src/models/switch_device_theme.dart';
 import 'package:flutter_switch_device/src/widgets/port_widget.dart';
 
 void main() {
+  const theme = SwitchDeviceTheme.dark();
+
   PortData makePort({
     int portNumber = 1,
     PortStatus status = PortStatus.up,
@@ -29,14 +32,14 @@ void main() {
   group('PortWidget', () {
     testWidgets('renders port number label', (tester) async {
       await tester.pumpWidget(wrapInApp(
-        PortWidget(data: makePort(portNumber: 7)),
+        PortWidget(data: makePort(portNumber: 7), theme: theme),
       ));
       expect(find.text('7'), findsOneWidget);
     });
 
     testWidgets('hides label when showLabel is false', (tester) async {
       await tester.pumpWidget(wrapInApp(
-        PortWidget(data: makePort(portNumber: 7, showLabel: false)),
+        PortWidget(data: makePort(portNumber: 7, showLabel: false), theme: theme),
       ));
       expect(find.text('7'), findsNothing);
     });
@@ -46,6 +49,7 @@ void main() {
       await tester.pumpWidget(wrapInApp(
         PortWidget(
           data: makePort(),
+          theme: theme,
           onTap: () => tapped = true,
         ),
       ));
@@ -58,6 +62,7 @@ void main() {
       await tester.pumpWidget(wrapInApp(
         PortWidget(
           data: makePort(),
+          theme: theme,
           onHover: () => hovered = true,
         ),
       ));
@@ -74,6 +79,7 @@ void main() {
       await tester.pumpWidget(wrapInApp(
         PortWidget(
           data: makePort(),
+          theme: theme,
           onHoverExit: () => exited = true,
         ),
       ));
