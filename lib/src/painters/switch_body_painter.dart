@@ -1,4 +1,3 @@
-import 'dart:math';
 import 'package:flutter/material.dart';
 
 /// Draws a generic network switch chassis.
@@ -21,8 +20,6 @@ class SwitchBodyPainter extends CustomPainter {
   static const _bodyGradientEnd = Color(0xFF44445A);
   static const _activeColor = Color(0xFF2CC339);
   static const _darkDetail = Color(0xFF414142);
-  static const _screenBorder = Color(0xFFEDEEF0);
-  static const _screenFill = Color(0xFFE8E9EB);
   static const _ledGreen = Color(0xFF49B87D);
   static const _ledYellow = Color(0xFFF0CC18);
 
@@ -45,69 +42,40 @@ class SwitchBodyPainter extends CustomPainter {
       gradientPaint,
     );
 
-    // -- Left panel metrics --
-    final leftPanelW = w * 0.42;
-    final int ledCount = min((totalPorts / 2).ceil(), 8);
-    final ledRadius = h * 0.07;
-    final ledStartX = w * 0.03;
-    final ledSpacing = (leftPanelW - w * 0.06) / max(ledCount, 1);
+    // -- Left indicator panel (~15% of body width) --
+    final panelW = w * 0.15;
+    final ledRadius = h * 0.08;
+    final panelCenterX = panelW * 0.5;
 
-    // -- Top LED row --
-    final ledY = h * 0.26;
-    for (int i = 0; i < ledCount; i++) {
-      final cx = ledStartX + ledSpacing * (i + 0.5);
-      final color = i == 0
-          ? _ledGreen
-          : i == 1
-              ? _ledYellow
-              : _darkDetail;
-      canvas.drawCircle(Offset(cx, ledY), ledRadius, Paint()..color = color);
-    }
-
-    // -- Status bars --
-    final barPaint = Paint()..color = _darkDetail;
-    final barH = h * 0.06;
-    final barX = w * 0.03;
-    final barW = leftPanelW - w * 0.06;
-    final barR = Radius.circular(barH / 2);
-
-    canvas.drawRRect(
-      RRect.fromRectAndRadius(Rect.fromLTWH(barX, h * 0.42, barW, barH), barR),
-      barPaint,
-    );
-    canvas.drawRRect(
-      RRect.fromRectAndRadius(Rect.fromLTWH(barX, h * 0.56, barW, barH), barR),
-      barPaint,
+    // Power LED (green)
+    canvas.drawCircle(
+      Offset(panelCenterX, h * 0.28),
+      ledRadius,
+      Paint()..color = _ledGreen,
     );
 
-    // -- Bottom LED row --
-    final btmLedY = h * 0.76;
-    final btmPaint = Paint()..color = _darkDetail;
-    for (int i = 0; i < ledCount; i++) {
-      final cx = ledStartX + ledSpacing * (i + 0.5);
-      canvas.drawCircle(Offset(cx, btmLedY), ledRadius, btmPaint);
-    }
-
-    // -- Display screen --
-    final screenX = leftPanelW + w * 0.02;
-    final screenY = h * 0.12;
-    final screenW = w - screenX - w * 0.02;
-    final screenH = h - screenY * 2;
-    final screenR = Radius.circular(h * 0.06);
-
-    canvas.drawRRect(
-      RRect.fromRectAndRadius(
-        Rect.fromLTWH(screenX - 1, screenY - 1, screenW + 2, screenH + 2),
-        screenR,
-      ),
-      Paint()..color = _screenBorder,
+    // Status LED (yellow)
+    canvas.drawCircle(
+      Offset(panelCenterX, h * 0.50),
+      ledRadius,
+      Paint()..color = _ledYellow,
     );
-    canvas.drawRRect(
-      RRect.fromRectAndRadius(
-        Rect.fromLTWH(screenX, screenY, screenW, screenH),
-        screenR,
-      ),
-      Paint()..color = _screenFill,
+
+    // Inactive LED (grey)
+    canvas.drawCircle(
+      Offset(panelCenterX, h * 0.72),
+      ledRadius,
+      Paint()..color = _darkDetail,
+    );
+
+    // -- Vertical divider between indicator panel and port area --
+    final dividerX = panelW;
+    canvas.drawLine(
+      Offset(dividerX, h * 0.15),
+      Offset(dividerX, h * 0.85),
+      Paint()
+        ..color = _darkDetail
+        ..strokeWidth = 1.5,
     );
 
     // Active border (stacked highlight) — drawn last so it appears on top
