@@ -21,6 +21,9 @@ design_preview.html
 # OS files
 .DS_Store
 
+# Large media files (GIF is referenced via GitHub raw URL in README)
+example.mov
+
 # Misc
 *.class
 *.log

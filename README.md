@@ -2,6 +2,10 @@
 
 A Flutter widget that renders network switch devices with interactive ports — fully programmatic, no SVG assets required.
 
+## Example
+
+![flutter_switch_device demo](https://raw.githubusercontent.com/lianghualin/flutter_switch_device/main/doc/example.gif)
+
 ## Features
 
 - **6 to 48 ports** — single-unit (6–28P) and stacked two-unit (30–48P) layouts
@@ -11,6 +15,7 @@ A Flutter widget that renders network switch devices with interactive ports — 
 - **Dark & light themes** — auto-detects from `Theme.of(context).brightness`, or pass a custom theme
 - **Configuration mode** — visual indicator for setup/editing scenarios
 - **Port position API** — `SwitchDeviceView.getPortPositions()` for drawing connection lines
+- **Compact switch icon** — `SwitchIconWidget` for topology views (3 LEDs, 2×8 port grid, 3 sizes)
 - **Zero external dependencies** — uses only Flutter's `CustomPainter` API
 
 ## Getting started
@@ -19,7 +24,7 @@ Add the package to your `pubspec.yaml`:
 
 ```yaml
 dependencies:
-  flutter_switch_device: ^0.1.0
+  flutter_switch_device: ^0.2.0
 ```
 
 Then run:
@@ -71,6 +76,20 @@ final positions = SwitchDeviceView.getPortPositions(
 // positions => {1: Offset(x, y), 2: Offset(x, y), ...}
 ```
 
+### Compact switch icon
+
+```dart
+// Auto-detects theme from context
+SwitchIconWidget(size: 72)
+
+// Explicit theme and elevation
+SwitchIconWidget(
+  size: 38,
+  elevation: 2,
+  theme: SwitchDeviceTheme.dark(),
+)
+```
+
 ### Select preset by port count
 
 ```dart
@@ -101,6 +120,14 @@ final format = switchFormatForPortCount(24); // returns Switch24P()
 | `stackedPart` | `int` | Active unit for stacked switches (0, 1, 2) |
 | `onStackedPartChanged` | `ValueChanged<int>?` | Stacked unit toggle callback |
 | `theme` | `SwitchDeviceTheme?` | Optional theme override |
+
+### SwitchIconWidget
+
+| Parameter | Type | Description |
+|-----------|------|-------------|
+| `size` | `double` | Icon width; height = size / 2.5 |
+| `elevation` | `double` | Material elevation (default: 5) |
+| `theme` | `SwitchDeviceTheme?` | Optional theme; auto-detects from context |
 
 ### PortStatus
 
