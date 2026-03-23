@@ -6,5 +6,8 @@ void main() {
     expect(PortStatus.up, isNotNull);
     expect(const Switch24P(), isA<SwitchFormat>());
     expect(switchFormatForPortCount(6), isA<SwitchFormat>());
+    // Switch icon exports are accessible
+    expect(SwitchIconWidget.new, isA<Function>());
+    expect(SwitchIconPainter.new, isA<Function>());
   });
 }
