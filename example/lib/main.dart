@@ -156,6 +156,23 @@ class _DemoPageState extends State<DemoPage> {
             ),
           ),
 
+          // Switch icon (compact representation)
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 8),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const Text('Icon sizes:  ',
+                    style: TextStyle(fontSize: 12)),
+                const SwitchIconWidget(size: 72),
+                const SizedBox(width: 16),
+                const SwitchIconWidget(size: 68, elevation: 2),
+                const SizedBox(width: 16),
+                const SwitchIconWidget(size: 38, elevation: 1),
+              ],
+            ),
+          ),
+
           // Switch view
           Expanded(
             child: Center(
