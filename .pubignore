@@ -1,0 +1,35 @@
+# .pubignore replaces .gitignore for publishing — must be comprehensive
+
+# Build artifacts
+/build/
+.dart_tool/
+
+# Internal development files
+doc/superpowers/
+docs/
+design_preview.html
+.superpowers/
+/coverage/
+
+# IDE files
+*.iml
+*.ipr
+*.iws
+.idea/
+.vscode/
+
+# OS files
+.DS_Store
+
+# Misc
+*.class
+*.log
+*.pyc
+*.swp
+.atom/
+.buildlog/
+.history
+.svn/
+migrate_working_dir/
+.flutter-plugins-dependencies
+**/doc/api/
