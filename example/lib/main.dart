@@ -70,6 +70,7 @@ class _DemoPageState extends State<DemoPage> {
   Map<int, PortStatus> _portStatuses = {};
   bool _isConfig = false;
   int _stackedPart = 1;
+  Set<int> _selectedPorts = {};
   final List<String> _eventLog = [];
 
   SwitchFormat get _format => _scenarios[_selectedScenario]!;
@@ -115,6 +116,7 @@ class _DemoPageState extends State<DemoPage> {
                   onChanged: (v) => setState(() {
                     _selectedScenario = v!;
                     _portStatuses = {};
+                    _selectedPorts = {};
                     _stackedPart = _format.isStacked ? 1 : 0;
                   }),
                 ),
@@ -122,6 +124,13 @@ class _DemoPageState extends State<DemoPage> {
                   onPressed: _randomizeStatuses,
                   child: const Text('Randomize statuses'),
                 ),
+                if (_selectedPorts.isNotEmpty)
+                  ElevatedButton(
+                    onPressed: () =>
+                        setState(() => _selectedPorts = {}),
+                    child: Text(
+                        'Clear selection (${_selectedPorts.length})'),
+                  ),
                 Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [
@@ -197,6 +206,18 @@ class _DemoPageState extends State<DemoPage> {
                     onPortTap: (port) => _log('Tap: port $port'),
                     onSwitchHover: () {},
                     onSwitchHoverExit: () {},
+                    selectedPorts: _selectedPorts,
+                    onPortSelected: (port) {
+                      setState(() {
+                        _selectedPorts = Set.of(_selectedPorts);
+                        if (_selectedPorts.contains(port)) {
+                          _selectedPorts.remove(port);
+                        } else {
+                          _selectedPorts.add(port);
+                        }
+                      });
+                      _log('Selected: $_selectedPorts');
+                    },
                   );
                 },
               ),

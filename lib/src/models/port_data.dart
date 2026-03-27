@@ -14,6 +14,7 @@ class PortData {
     this.opacity = 1.0,
     this.showLabel = true,
     this.label,
+    this.isSelected = false,
   });
 
   /// 1-based port number.
@@ -42,4 +43,7 @@ class PortData {
 
   /// Optional custom label (defaults to port number string).
   final String? label;
+
+  /// Whether this port is currently selected (spotlight mode).
+  final bool isSelected;
 }

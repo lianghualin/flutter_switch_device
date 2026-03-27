@@ -28,6 +28,9 @@ class SwitchDeviceView extends StatelessWidget {
     this.stackedPart = 0,
     this.onStackedPartChanged,
     this.theme,
+    this.selectedPorts = const {},
+    this.onPortSelected,
+    this.unselectedPortOpacity = 0.15,
   });
 
   final Size size;
@@ -45,12 +48,33 @@ class SwitchDeviceView extends StatelessWidget {
   /// Optional theme override. When null, auto-detects from app brightness.
   final SwitchDeviceTheme? theme;
 
+  /// Currently selected port numbers (spotlight mode).
+  ///
+  /// When non-empty, unselected ports are dimmed to [unselectedPortOpacity]
+  /// and selected ports keep their hover float animation.
+  final Set<int> selectedPorts;
+
+  /// Called when a port is tapped for selection/deselection.
+  final ValueChanged<int>? onPortSelected;
+
+  /// Opacity for unselected ports when [selectedPorts] is non-empty.
+  ///
+  /// Defaults to 0.15.
+  final double unselectedPortOpacity;
+
   /// Returns port center positions for the given format and viewport size.
+  ///
+  /// When [parentOffset] is provided, it is added to every position so that
+  /// the returned coordinates are in the parent's coordinate space — useful
+  /// for drawing connection lines in a topology view.
   static Map<int, Offset> getPortPositions(
     SwitchFormat format,
-    Size viewportSize,
-  ) {
-    return SwitchLayout.computePortCenters(format, viewportSize);
+    Size viewportSize, {
+    Offset parentOffset = Offset.zero,
+  }) {
+    final positions = SwitchLayout.computePortCenters(format, viewportSize);
+    if (parentOffset == Offset.zero) return positions;
+    return positions.map((k, v) => MapEntry(k, v + parentOffset));
   }
 
   @override
@@ -66,6 +90,8 @@ class SwitchDeviceView extends StatelessWidget {
       portStatuses: portStatuses,
       isConfig: isConfig,
       stackedPart: stackedPart,
+      selectedPorts: selectedPorts,
+      unselectedPortOpacity: unselectedPortOpacity,
     );
 
     return MouseRegion(
@@ -89,7 +115,10 @@ class SwitchDeviceView extends StatelessWidget {
                 isConfig: isConfig,
                 onHover: () => onPortHover?.call(portData.portNumber),
                 onHoverExit: onPortHoverExit,
-                onTap: () => onPortTap?.call(portData.portNumber),
+                onTap: () {
+                  onPortTap?.call(portData.portNumber);
+                  onPortSelected?.call(portData.portNumber);
+                },
               ),
           ],
         ),
@@ -124,7 +153,10 @@ class SwitchDeviceView extends StatelessWidget {
       height: rect.height,
       child: GestureDetector(
         onTap: format.isStacked
-            ? () => onStackedPartChanged?.call(isUpper ? 1 : 2)
+            ? () {
+                final tapped = isUpper ? 1 : 2;
+                onStackedPartChanged?.call(stackedPart == tapped ? 0 : tapped);
+              }
             : null,
         child: Opacity(
           opacity: opacity,

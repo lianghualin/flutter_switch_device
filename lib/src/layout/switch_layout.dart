@@ -45,6 +45,8 @@ class SwitchLayout {
     Map<int, PortStatus> portStatuses = const {},
     bool isConfig = false,
     int stackedPart = 0,
+    Set<int> selectedPorts = const {},
+    double unselectedPortOpacity = 0.15,
   }) {
     final cs = _centerSize(format, viewportSize);
     final origin = _origin(format, viewportSize, cs);
@@ -63,6 +65,8 @@ class SwitchLayout {
       portStatuses: portStatuses,
       isConfig: isConfig,
       stackedPart: stackedPart,
+      selectedPorts: selectedPorts,
+      unselectedPortOpacity: unselectedPortOpacity,
     );
 
     return SwitchLayoutResult(
@@ -204,20 +208,28 @@ class SwitchLayout {
     required Map<int, PortStatus> portStatuses,
     required bool isConfig,
     required int stackedPart,
+    required Set<int> selectedPorts,
+    required double unselectedPortOpacity,
   }) {
     final validPorts = format.validPortsNum ?? format.totalPortsNum;
+    final hasSelection = selectedPorts.isNotEmpty;
 
     return portCenters.entries.map((entry) {
       final portNum = entry.key;
       final center = entry.value;
       final isInvalid = portNum > validPorts;
       final isUpperBody = portNum <= 24;
+      final isSelected = selectedPorts.contains(portNum);
 
       double opacity = 1.0;
       if (format.isStacked && stackedPart > 0) {
         final isActiveBody =
             (stackedPart == 1 && isUpperBody) || (stackedPart == 2 && !isUpperBody);
         opacity = isActiveBody ? 1.0 : 0.3;
+      }
+      // Spotlight mode: dim unselected ports when any ports are selected.
+      if (hasSelection && !isSelected) {
+        opacity *= unselectedPortOpacity;
       }
 
       return PortData(
@@ -230,6 +242,7 @@ class SwitchLayout {
             : (portStatuses[portNum] ?? PortStatus.unknown),
         isInvalid: isInvalid,
         opacity: opacity,
+        isSelected: isSelected,
       );
     }).toList()
       ..sort((a, b) => a.portNumber.compareTo(b.portNumber));

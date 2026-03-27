@@ -38,9 +38,23 @@ class _PortWidgetState extends State<PortWidget>
       duration: const Duration(milliseconds: 300),
       vsync: this,
     );
-    _floatOffset = Tween<double>(begin: 0, end: -3).animate(
+    // Odd ports (top row) float up, even ports (bottom row) float down.
+    final floatEnd = widget.data.portNumber.isOdd ? -3.0 : 3.0;
+    _floatOffset = Tween<double>(begin: 0, end: floatEnd).animate(
       CurvedAnimation(parent: _controller, curve: Curves.easeInOut),
     );
+  }
+
+  @override
+  void didUpdateWidget(covariant PortWidget oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (widget.data.isSelected != oldWidget.data.isSelected) {
+      if (widget.data.isSelected) {
+        _controller.forward();
+      } else {
+        _controller.reverse();
+      }
+    }
   }
 
   @override
@@ -68,7 +82,10 @@ class _PortWidgetState extends State<PortWidget>
           widget.onHover?.call();
         },
         onExit: (_) {
-          _controller.reverse();
+          // Keep float animation when port is selected.
+          if (!widget.data.isSelected) {
+            _controller.reverse();
+          }
           widget.onHoverExit?.call();
         },
         child: GestureDetector(

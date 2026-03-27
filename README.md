@@ -14,7 +14,10 @@ A Flutter widget that renders network switch devices with interactive ports — 
 - **Auto-adaptive layout** — single-row, two-row, or stacked based on port count
 - **Dark & light themes** — auto-detects from `Theme.of(context).brightness`, or pass a custom theme
 - **Configuration mode** — visual indicator for setup/editing scenarios
-- **Port position API** — `SwitchDeviceView.getPortPositions()` for drawing connection lines
+- **Port position API** — `SwitchDeviceView.getPortPositions()` for drawing connection lines, with optional `parentOffset` for topology coordinate spaces
+- **Port selection (spotlight mode)** — multi-select ports with `selectedPorts`; unselected ports dim automatically
+- **Directional hover** — top-row ports float up, bottom-row ports float down
+- **Stacked part toggle** — re-tap the active unit to deselect and show both at full opacity
 - **Compact switch icon** — `SwitchIconWidget` for topology views (3 LEDs, 2×8 port grid, 3 sizes)
 - **Zero external dependencies** — uses only Flutter's `CustomPainter` API
 
@@ -66,12 +69,34 @@ SwitchDeviceView(
 )
 ```
 
+### Port selection (spotlight mode)
+
+```dart
+SwitchDeviceView(
+  size: const Size(600, 200),
+  format: const Switch24P(),
+  portStatuses: portMap,
+  selectedPorts: {1, 3, 7},              // highlighted ports
+  onPortSelected: (port) {               // toggle selection
+    setState(() {
+      if (_selected.contains(port)) {
+        _selected.remove(port);
+      } else {
+        _selected.add(port);
+      }
+    });
+  },
+  unselectedPortOpacity: 0.15,           // dim unselected ports
+)
+```
+
 ### Get port positions (for topology lines)
 
 ```dart
 final positions = SwitchDeviceView.getPortPositions(
   const Switch24P(),
   const Size(600, 200),
+  parentOffset: switchWidgetOffset,       // optional: shift to parent coords
 );
 // positions => {1: Offset(x, y), 2: Offset(x, y), ...}
 ```
@@ -117,8 +142,11 @@ final format = switchFormatForPortCount(24); // returns Switch24P()
 | `onPortTap` | `ValueChanged<int>?` | Port tap callback |
 | `onPortHover` | `ValueChanged<int>?` | Port hover callback |
 | `onPortHoverExit` | `VoidCallback?` | Port hover exit callback |
-| `stackedPart` | `int` | Active unit for stacked switches (0, 1, 2) |
-| `onStackedPartChanged` | `ValueChanged<int>?` | Stacked unit toggle callback |
+| `stackedPart` | `int` | Active unit for stacked switches (0=both, 1=upper, 2=lower) |
+| `onStackedPartChanged` | `ValueChanged<int>?` | Stacked unit toggle callback (re-tap deselects) |
+| `selectedPorts` | `Set<int>` | Currently selected ports for spotlight mode |
+| `onPortSelected` | `ValueChanged<int>?` | Port selection toggle callback |
+| `unselectedPortOpacity` | `double` | Opacity for unselected ports in spotlight mode (default: 0.15) |
 | `theme` | `SwitchDeviceTheme?` | Optional theme override |
 
 ### SwitchIconWidget
