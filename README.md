@@ -27,7 +27,7 @@ Add the package to your `pubspec.yaml`:
 
 ```yaml
 dependencies:
-  flutter_switch_device: ^0.2.0
+  flutter_switch_device: ^0.3.0
 ```
 
 Then run:

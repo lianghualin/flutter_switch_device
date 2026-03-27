@@ -1,3 +1,10 @@
+## 0.3.0
+
+* **Port selection (spotlight mode)** — `selectedPorts`, `onPortSelected`, and `unselectedPortOpacity` parameters on `SwitchDeviceView`. Multi-select support; unselected ports dim when any are selected; selected ports keep their float animation.
+* **Directional hover animation** — top-row (odd) ports float up, bottom-row (even) ports float down on hover, matching the two-row physical layout.
+* **Stacked part deselect** — re-tapping the active stacked switch body now deselects it (sets `stackedPart` to 0), showing both units at full opacity.
+* **`getPortPositions()` offset** — optional `parentOffset` parameter shifts all returned positions into the parent's coordinate space for topology line drawing.
+
 ## 0.2.0
 
 * Add `SwitchIconWidget` — a compact switch icon for topology views and device lists.
@@ -6,10 +13,6 @@
 * Optional theme with auto-detection from `Theme.of(context).brightness`.
 * Material elevation via `PhysicalShape`.
 * Theme-aware port grid colors for visibility on both dark and light backgrounds.
-* **Port selection (spotlight mode)** — `selectedPorts`, `onPortSelected`, and `unselectedPortOpacity` parameters on `SwitchDeviceView`. Multi-select support; unselected ports dim when any are selected; selected ports keep their float animation.
-* **Directional hover animation** — top-row (odd) ports float up, bottom-row (even) ports float down on hover, matching the two-row physical layout.
-* **Stacked part deselect** — re-tapping the active stacked switch body now deselects it (sets `stackedPart` to 0), showing both units at full opacity.
-* **`getPortPositions()` offset** — optional `parentOffset` parameter shifts all returned positions into the parent's coordinate space for topology line drawing.
 
 ## 0.1.0
 
